@@ -1387,6 +1387,7 @@ function coverForAudio(){$('cover').hidden=S.video==='show';if(S.video!=='show')
 function noCaptions(){try{player.unloadModule('captions')}catch(e){}try{player.unloadModule('cc')}catch(e){}}
 function onState(e){
   const st=e.data;
+  if(running&&G)setTimeout(syncPresent,0); // keep the Start / Pause button honest about what the player is doing
   if(st===YT.PlayerState.PLAYING){errStreak=0;noCaptions()}
   if(st===YT.PlayerState.PLAYING&&running){
     if(countedPos!==G.pos){countedPos=G.pos;if(!G.played.includes(cur().id)){G.played.push(cur().id);saveGame();renderPlayed();syncPresent()}}
@@ -1447,9 +1448,9 @@ function tick(){
 /* Start / Resume only asks YouTube to play. If the music doesn't really begin (slow load, an ad, or the browser waiting for a tap),
    say so, and let a tap on the video try again instead of stopping the game. */
 let guardT=null;
-const musicOn=()=>{try{return player.getPlayerState()===YT.PlayerState.PLAYING}catch(e){return false}};
-const vid=()=>document.querySelector('#play .video');
-function endTapThrough(){vid().classList.remove('tapThrough')}
+function musicOn(){try{return player.getPlayerState()===YT.PlayerState.PLAYING}catch(e){return false}}
+function vid(){return document.querySelector('#play .video')}
+function endTapThrough(){vid().classList.remove('tapThrough');if(G)syncPresent()}
 function startGuard(){
   clearTimeout(guardT);endTapThrough();
   if(!running||paused||musicOn())return;
@@ -1458,13 +1459,14 @@ function startGuard(){
     if(!(running&&!paused&&!musicOn()))return;
     // the browser won't start it from a script: show the YouTube player itself so a tap on it counts
     vid().classList.add('tapThrough');
-    $('nowArtist').textContent='Tap the video to start the music';
+    $('nowArtist').textContent='Tap the video to start the music';syncPresent();
   },2500);
 }
 function toggleRun(){
   if(!playerReady||isOver())return;
-  if(!running){running=true;paused=false;player.playVideo();showSong(cur(),S.clip);$('startBtn').textContent='Pause';clearInterval(ticker);ticker=setInterval(tick,250);holdWake();startGuard()}
-  else if(paused){paused=false;$('cover').classList.remove('stopped');player.playVideo();$('startBtn').textContent='Pause';holdWake();coverForAudio();startGuard()}
+  if(!running){running=true;paused=false;player.playVideo();showSong(cur(),S.clip);clearInterval(ticker);ticker=setInterval(tick,250);holdWake();startGuard()}
+  else if(paused){paused=false;$('cover').classList.remove('stopped');player.playVideo();holdWake();coverForAudio();startGuard()}
+  else if(!musicOn()){try{player.playVideo()}catch(e){}startGuard()} // the music hasn't started yet: this press tries again instead of stopping the game
   else{paused=true;clearTimeout(guardT);endTapThrough();player.pauseVideo();$('startBtn').textContent='Resume';$('cover').hidden=false;$('cover').classList.toggle('stopped',S.video==='show');$('coverBig').textContent='Stopped';$('coverMsg').textContent='Checking a card'}
   syncPresent();renderWin();
   if(paused){setPad('pCheckNum','');$('pCheckOut').innerHTML=''}
@@ -1513,10 +1515,13 @@ function syncPresent(){
   if(over&&G.winner){$('rPatName').textContent=`Card ${G.winner} wins`;$('rPatNote').hidden=true}
   $('rCheck').hidden=!(running&&paused&&!over);$('rail').classList.toggle('checking',!$('rCheck').hidden);document.body.classList.toggle('bingoStop',!!(running&&paused&&!over));
   const live=running&&!paused,hold=running&&paused;
-  $('hostRun').textContent=over?'Game over':!running?(G.played.length?'Resume':'Start game'):paused?'Resume':'Stop for bingo';
-  $('hostRun').classList.toggle('stop',live);$('startBtn').classList.toggle('stop',live);
+  // the button only says Pause / Stop for bingo once the music is really playing
+  const waiting=live&&!over&&!musicOn(),waitTxt=vid().classList.contains('tapThrough')?'Start music':'Starting…',liveOn=live&&!waiting;
+  $('hostRun').textContent=over?'Game over':!running?(G.played.length?'Resume':'Start game'):paused?'Resume':waiting?waitTxt:'Stop for bingo';
+  if(running&&!paused&&!over)$('startBtn').textContent=waiting?waitTxt:'Pause';
+  $('hostRun').classList.toggle('stop',liveOn);$('startBtn').classList.toggle('stop',liveOn);
   $('hostState').className=live?'live':hold?'hold':'';
-  $('hostStateText').textContent=over?(G.winner?`Game over · card ${G.winner} won`:'Game over'):live?`${extend?'Playing full song':'Playing'} · song ${G.played.length} of ${G.order.length}`:hold?'Stopped · checking a card':`Ready · ${G.order.length-G.pos} songs`;
+  $('hostStateText').textContent=over?(G.winner?`Game over · card ${G.winner} won`:'Game over'):live?(waiting?'Starting the music…':`${extend?'Playing full song':'Playing'} · song ${G.played.length} of ${G.order.length}`):hold?'Stopped · checking a card':`Ready · ${G.order.length-G.pos} songs`;
   $('hostRun').disabled=over||!playerReady||LOCAL;syncSkip();
   const nk=T[gi+1];
   $('hostNext').hidden=!(over&&nk);if(over&&nk)$('hostNext').innerHTML=`<span class="lg">Next game: ${esc(CATS[nk].name)}</span><span class="sm">Next game →</span>`;
