@@ -38,7 +38,7 @@ class H(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *a): pass
 
 if __name__ == "__main__":
-    if "--no-pull" not in sys.argv:
+    if "--no-pull" not in sys.argv and os.path.isdir(os.path.join(ROOT, ".git")):  # a downloaded ZIP has no .git, so skip the pull
         r = subprocess.run(["git", "pull", "--ff-only", "-q"], capture_output=True, text=True)
         print("git pull:", (r.stdout + r.stderr).strip() or "up to date", flush=True)
     if stale(): rebuild()

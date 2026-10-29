@@ -11,21 +11,26 @@ A music bingo game for hosting nights out. Line up categories, print cards (or l
 - Players join by scanning a QR code and get a card on their phone, with no server. Printed cards work too, with a number you type into the host's card checker.
 - Card numbers are deterministic: a card is a seeded shuffle of the category's song list, so any card can be rebuilt and checked later.
 
-## Run it
+## Play it or run your own copy
 
-Needs Python 3. Optional: `pip install pyphen` for word hyphenation on phone cards.
+**Play now:** https://endrs.us/bingo
+
+**Run it on your own computer** (good for printed cards and a TV or projector):
+
+1. On this page click **Code, Download ZIP** (or `git clone` it) and unzip it.
+2. Install [Python 3](https://www.python.org/downloads/).
+3. In the folder, run `python3 scripts/dev.py` (on Windows, `py scripts/dev.py`; on Mac and Linux, `./dev` also works).
+4. Open http://localhost:8765.
+
+It builds itself the first time and rebuilds when you change the source. Optional: `pip install pyphen` gives phone cards nicer word breaks. This local copy can't be reached from other devices, so players can't join from their phones with it. Print cards instead, or host your own copy as below.
+
+**Host your own copy** (so players can join from their phones):
 
 ```bash
-./dev
+python3 scripts/make_site.py
 ```
 
-Open http://localhost:8765. It rebuilds when the source changes. To build once:
-
-```bash
-python3 scripts/build.py   # writes dist/index.html and songs/<category>-<hash>.json
-```
-
-`dist/index.html` is a single file. Host it anywhere that serves static files over https (the phone camera scanner needs https), and publish the `songs/` folder and `vendor/jsqr.min.js` next to it.
+That builds the game and puts everything it needs in `site/` (`index.html`, `songs/` and `jsqr.min.js`). Upload the contents of `site/` to any static host that serves over https, such as GitHub Pages or Netlify. The phone camera scanner needs https.
 
 ## Song lists
 
