@@ -1386,7 +1386,7 @@ function onState(e){
   if(st===YT.PlayerState.PLAYING){errStreak=0;noCaptions()}
   if(st===YT.PlayerState.PLAYING&&running){
     if(countedPos!==G.pos){countedPos=G.pos;if(!G.played.includes(cur().id)){G.played.push(cur().id);saveGame();renderPlayed();syncPresent()}}
-    coverForAudio();
+    clearTimeout(guardT);coverForAudio();
   }
   if(st===YT.PlayerState.ENDED&&running&&!paused){
     if(!checkedLen){checkedLen=true;const d=player.getDuration()||0;curStart=Math.max(0,Math.floor(d-S.clip-5));player.seekTo(curStart,true);player.playVideo();return}
@@ -1440,17 +1440,31 @@ function tick(){
   showSong(cur(),rem);
   if(rem<=0)advance();
 }
+/* Start / Resume only asks YouTube to play. If the music doesn't really begin (slow load, an ad, or the browser waiting for a tap),
+   say so, and let a tap on the video try again instead of stopping the game. */
+let guardT=null;
+const musicOn=()=>{try{return player.getPlayerState()===YT.PlayerState.PLAYING}catch(e){return false}};
+function startGuard(){
+  clearTimeout(guardT);
+  if(!running||paused||musicOn())return;
+  $('cover').hidden=false;$('cover').classList.remove('canJoin','stopped');$('coverBig').textContent='Starting the music…';$('coverMsg').textContent='';
+  guardT=setTimeout(()=>{if(running&&!paused&&!musicOn()){$('cover').hidden=false;$('cover').classList.remove('canJoin');$('coverBig').textContent='Tap to start the music';$('coverMsg').textContent='Your browser may be waiting for a tap.'}},3500);
+}
 function toggleRun(){
   if(!playerReady||isOver())return;
-  if(!running){running=true;paused=false;player.playVideo();showSong(cur(),S.clip);$('startBtn').textContent='Pause';clearInterval(ticker);ticker=setInterval(tick,250);holdWake()}
-  else if(paused){paused=false;$('cover').classList.remove('stopped');player.playVideo();$('startBtn').textContent='Pause';holdWake();coverForAudio()}
+  if(!running){running=true;paused=false;player.playVideo();showSong(cur(),S.clip);$('startBtn').textContent='Pause';clearInterval(ticker);ticker=setInterval(tick,250);holdWake();startGuard()}
+  else if(paused){paused=false;$('cover').classList.remove('stopped');player.playVideo();$('startBtn').textContent='Pause';holdWake();coverForAudio();startGuard()}
   else{paused=true;player.pauseVideo();$('startBtn').textContent='Resume';$('cover').hidden=false;$('cover').classList.toggle('stopped',S.video==='show');$('coverBig').textContent='Stopped';$('coverMsg').textContent='Checking a card'}
   syncPresent();renderWin();
   if(paused){setPad('pCheckNum','');$('pCheckOut').innerHTML=''}
 }
 $('startBtn').onclick=toggleRun;
 /* clicking the video (or its cover when stopped) does the same as the Start / Pause / Stop for bingo button */
-document.querySelector('#play .video').addEventListener('click',toggleRun);
+document.querySelector('#play .video').addEventListener('click',()=>{
+  // music hasn't actually started: a tap tries to start it (this tap is the browser's go-ahead) instead of stopping the game
+  if(running&&!paused&&playerReady&&!isOver()&&!musicOn()){try{player.playVideo()}catch(e){}startGuard();return}
+  toggleRun();
+});
 function syncSkip(){
   const can=running&&!paused&&!isOver(),l=$('skipLink');
   l.hidden=!can;if(!can){l.classList.remove('armed');l.textContent='Skip this song'}
