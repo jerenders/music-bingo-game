@@ -326,13 +326,12 @@ input[type=text],input[type=number]{background:var(--bg);border:1px solid var(--
 .video.tapThrough .cover{display:none}
 .video.tapThrough{border-color:var(--lime);box-shadow:0 0 0 3px var(--lime)}
 /* before the game starts the video area is a Start button: the label is drawn on the cover, but the tap itself passes through to the YouTube player (browsers only start a video from a real tap on it) */
-.coverGo{display:none;position:absolute;left:50%;bottom:4%;transform:translateX(-50%);z-index:3;padding:9px 30px;border-radius:999px;background:var(--btn);color:var(--dark)!important;font-weight:700;font-size:clamp(14px,1.8vw,20px)!important;line-height:1.2;white-space:nowrap;pointer-events:none}
+.coverGo{display:none;position:absolute;left:50%;bottom:4%;transform:translateX(-50%);z-index:3;padding:11px 40px;border-radius:999px;background:var(--btn);color:var(--dark)!important;font-weight:700;font-size:clamp(16px,2.2vw,26px)!important;line-height:1.2;white-space:nowrap;pointer-events:none}
 #play .video.tapStart .cover.canJoin{padding-bottom:20%}
 .video.tapStart iframe{pointer-events:auto}
 .video.tapStart::after{display:none}
 .video.tapStart .cover{pointer-events:none}
 .video.tapStart .coverGo{display:block}
-body.presenting .coverGo{display:none}
 .video .cover{z-index:2}
 .cover{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;padding:18px;background:#0a0b0d}
 .cover b{font-size:clamp(22px,5vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1.05}
@@ -346,8 +345,8 @@ body.presenting .coverGo{display:none}
 .track i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s linear}
 .songNo{font-size:13px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
 .meter .num{font-size:13px;color:var(--muted);min-width:3.2em;text-align:right}
-.controls{display:grid;grid-template-columns:1fr auto;gap:8px}
-#checkBtn{grid-column:1/-1}
+.controls{display:grid;grid-template-columns:1fr auto;gap:12px}
+#checkBtn{grid-column:1/-1;margin-top:10px}
 .skipLink{align-self:flex-start;font-size:13px;color:var(--dim);text-decoration:underline;text-underline-offset:3px;padding:4px 0}
 .skipLink:hover{color:var(--muted)}
 .skipLink.armed{color:var(--warn);text-decoration:none;font-weight:600}
@@ -1398,8 +1397,9 @@ function coverForAudio(){$('cover').hidden=S.video==='show';if(S.video!=='show')
 function noCaptions(){try{player.unloadModule('captions')}catch(e){}try{player.unloadModule('cc')}catch(e){}}
 function onState(e){
   const st=e.data;
+  if(st===YT.PlayerState.PLAYING)activated=true;
   // the host tapped the YouTube player itself (the Start game label on the video): the music is playing, so the game starts
-  if(st===YT.PlayerState.PLAYING&&!running&&G&&cat&&!$('play').hidden&&!isOver()&&!presenting){beginRun();syncPresent();renderWin()}
+  if(st===YT.PlayerState.PLAYING&&!running&&G&&cat&&!$('play').hidden&&!isOver()){beginRun();syncPresent();renderWin()}
   if(running&&G)setTimeout(syncPresent,0); // keep the Start / Pause button honest about what the player is doing
   if(st===YT.PlayerState.PLAYING){errStreak=0;noCaptions()}
   if(st===YT.PlayerState.PLAYING&&running){
@@ -1460,7 +1460,7 @@ function tick(){
 }
 /* Start / Resume only asks YouTube to play. If the music doesn't really begin (slow load, an ad, or the browser waiting for a tap),
    say so, and let a tap on the video try again instead of stopping the game. */
-let guardT=null,checking=false; // checking: the Check a card panel is open (only ever on purpose, never just because the game paused)
+let guardT=null,checking=false,activated=false; // activated: the player has really played once this page load (the browser has then accepted a tap on it) // checking: the Check a card panel is open (only ever on purpose, never just because the game paused)
 function musicOn(){try{return player.getPlayerState()===YT.PlayerState.PLAYING}catch(e){return false}}
 function vid(){return document.querySelector('#play .video')}
 function endTapThrough(){vid().classList.remove('tapThrough');if(G)syncPresent()}
@@ -1484,9 +1484,13 @@ window.addEventListener('blur',()=>setTimeout(()=>{
 },0));
 function beginRun(){running=true;paused=false;showSong(cur(),S.clip);clearInterval(ticker);ticker=setInterval(tick,250);holdWake()} // the game goes live
 function syncTapStart(){
-  const on=!!(G&&playerReady&&!running&&!isOver()&&!presenting);
-  vid().classList.toggle('tapStart',on);
+  // Until the browser has accepted one real tap on the YouTube player, no button can start the music. So the Start game button IS the video
+  // area (a tap goes straight through to the player) and the dead script-only buttons are hidden. After the first song plays, the normal buttons work.
+  const need=!!(G&&playerReady&&!running&&!isOver()&&!activated);
+  vid().classList.toggle('tapStart',need);
+  $('startBtn').hidden=need;
   if(G)$('coverGo').textContent=G.played.length?'Resume':'Start game';
+  return need;
 }
 function pauseRun(){paused=true;checking=false;clearTimeout(guardT);endTapThrough();player.pauseVideo();$('startBtn').textContent='Resume';$('cover').hidden=false;$('cover').classList.toggle('stopped',S.video==='show');$('coverBig').textContent='Paused';$('coverMsg').textContent=''}
 // Check a card is its own action: it pauses (if the game is playing) and opens the number pad
@@ -1551,7 +1555,7 @@ function syncPresent(){
   $('checkBtn').hidden=!(running&&!over);
   if(running&&paused&&!over){$('coverBig').textContent=checking?'Stopped':'Paused';$('coverMsg').textContent=checking?'Checking a card':''}
   const live=running&&!paused,hold=running&&paused;
-  syncTapStart();
+  const needTap=syncTapStart();
   // the button only says Pause / Stop for bingo once the music is really playing
   const waiting=live&&!over&&!musicOn(),goTxt=G.played.length?'Resume':'Start game',liveOn=live&&!waiting;
   $('hostRun').textContent=over?'Game over':!running?(G.played.length?'Resume':'Start game'):paused?'Resume':waiting?goTxt:'Stop for bingo';
@@ -1563,7 +1567,7 @@ function syncPresent(){
   const nk=T[gi+1];
   $('hostNext').hidden=!(over&&nk);if(over&&nk)$('hostNext').innerHTML=`<span class="lg">Next game: ${esc(CATS[nk].name)}</span><span class="sm">Next game →</span>`;
   // once the game is over, the only useful actions are the next game and exit
-  $('hostRun').hidden=over;$('hostKeep').hidden=over||!running||paused;$('hostNext').classList.toggle('primary',over);
+  $('hostRun').hidden=over||needTap;$('hostKeep').hidden=over||!running||paused;$('hostNext').classList.toggle('primary',over);
 }
 function enterPresent(){
   presenting=true;document.body.classList.add('presenting');syncPresent();
