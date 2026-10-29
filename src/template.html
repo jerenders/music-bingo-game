@@ -347,6 +347,7 @@ body.presenting .coverGo{display:none}
 .songNo{font-size:13px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
 .meter .num{font-size:13px;color:var(--muted);min-width:3.2em;text-align:right}
 .controls{display:grid;grid-template-columns:1fr auto;gap:8px}
+#checkBtn{grid-column:1/-1}
 .skipLink{align-self:flex-start;font-size:13px;color:var(--dim);text-decoration:underline;text-underline-offset:3px;padding:4px 0}
 .skipLink:hover{color:var(--muted)}
 .skipLink.armed{color:var(--warn);text-decoration:none;font-weight:600}
@@ -884,6 +885,7 @@ body:not(.presenting) .cover.stopped span{color:rgba(255,255,255,.8)}
       <div class="controls">
         <button class="btn primary lg" id="startBtn" disabled>Start game</button>
         <button class="btn lg" id="keepBtn" aria-pressed="false" disabled>Play full song</button>
+        <button class="btn lg" id="checkBtn" hidden>Check a card</button>
       </div>
       <button class="btn" id="nextGameBtn" hidden></button>
     </div>
@@ -904,7 +906,7 @@ body:not(.presenting) .cover.stopped span{color:rgba(255,255,255,.8)}
 </section>
 
 <div class="railBox" id="rCheck" role="dialog" aria-label="Check a card" hidden>
-  <div class="checkHead"><b class="checkTitle">Check a card</b><button type="button" class="checkX" id="checkX" aria-label="Back to the game">×</button></div>
+  <div class="checkHead"><b class="checkTitle">Check a card</b><button type="button" class="checkX" id="checkX" aria-label="Close">×</button></div>
   <input type="hidden" id="pCheckNum"><div class="pad" id="pPad"></div>
   <div id="pCheckOut"></div>
 </div>
@@ -1306,7 +1308,7 @@ function renderWin(){
   syncPresent();
 }
 $('winChip').onclick=()=>openWinSheet(cat,()=>{renderWin();if(!running||paused)idleScreen();if($('pCheckNum').value)checkCard()});
-function leavePlay(){if(player&&playerReady){try{player.stopVideo()}catch(e){}}clearTimeout(guardT);endTapThrough();vid().classList.remove('tapStart');running=false;clearInterval(ticker);releaseWake();exitPresent();document.body.classList.remove('bingoStop');$('rCheck').hidden=true}
+function leavePlay(){if(player&&playerReady){try{player.stopVideo()}catch(e){}}clearTimeout(guardT);endTapThrough();vid().classList.remove('tapStart');checking=false;running=false;clearInterval(ticker);releaseWake();exitPresent();document.body.classList.remove('bingoStop');$('rCheck').hidden=true}
 const cur=()=>byId[G.order[G.pos]];
 const isOver=()=>!!(G&&(G.done||G.pos>=G.order.length));
 function endGame(winner){
@@ -1458,7 +1460,7 @@ function tick(){
 }
 /* Start / Resume only asks YouTube to play. If the music doesn't really begin (slow load, an ad, or the browser waiting for a tap),
    say so, and let a tap on the video try again instead of stopping the game. */
-let guardT=null;
+let guardT=null,checking=false; // checking: the Check a card panel is open (only ever on purpose, never just because the game paused)
 function musicOn(){try{return player.getPlayerState()===YT.PlayerState.PLAYING}catch(e){return false}}
 function vid(){return document.querySelector('#play .video')}
 function endTapThrough(){vid().classList.remove('tapThrough');if(G)syncPresent()}
@@ -1486,12 +1488,19 @@ function syncTapStart(){
   vid().classList.toggle('tapStart',on);
   if(G)$('coverGo').textContent=G.played.length?'Resume':'Start game';
 }
+function pauseRun(){paused=true;checking=false;clearTimeout(guardT);endTapThrough();player.pauseVideo();$('startBtn').textContent='Resume';$('cover').hidden=false;$('cover').classList.toggle('stopped',S.video==='show');$('coverBig').textContent='Paused';$('coverMsg').textContent=''}
+// Check a card is its own action: it pauses (if the game is playing) and opens the number pad
+function openCheck(){
+  if(!playerReady||isOver()||!running)return;
+  if(!paused)pauseRun();
+  checking=true;clearChecks();syncPresent();renderWin();
+}
 function toggleRun(){
   if(!playerReady||isOver())return;
   if(!running){beginRun();player.playVideo();startGuard()}
-  else if(paused){paused=false;$('cover').classList.remove('stopped');player.playVideo();holdWake();coverForAudio();startGuard()}
+  else if(paused){paused=false;checking=false;$('cover').classList.remove('stopped');player.playVideo();holdWake();coverForAudio();startGuard()}
   else if(!musicOn()){try{player.playVideo()}catch(e){}startGuard()} // the music hasn't started yet: this press tries again instead of stopping the game
-  else{paused=true;clearTimeout(guardT);endTapThrough();player.pauseVideo();$('startBtn').textContent='Resume';$('cover').hidden=false;$('cover').classList.toggle('stopped',S.video==='show');$('coverBig').textContent='Stopped';$('coverMsg').textContent='Checking a card'}
+  else pauseRun();
   syncPresent();renderWin();
   if(paused){setPad('pCheckNum','');$('pCheckOut').innerHTML=''}
 }
@@ -1537,7 +1546,10 @@ function syncPresent(){
   paintPat($('rPat'),p);$('rPatName').textContent=`${patName(p)} to win`;$('rPatNote').hidden=p!=='line';
   const box=$('rWinBox');box.classList.toggle('won',!!(over&&G.winner));
   if(over&&G.winner){$('rPatName').textContent=`Card ${G.winner} wins`;$('rPatNote').hidden=true}
-  $('rCheck').hidden=!(running&&paused&&!over);$('rail').classList.toggle('checking',!$('rCheck').hidden);document.body.classList.toggle('bingoStop',!!(running&&paused&&!over));
+  const showCheck=!!(running&&paused&&!over&&checking);
+  $('rCheck').hidden=!showCheck;$('rail').classList.toggle('checking',showCheck);document.body.classList.toggle('bingoStop',showCheck);
+  $('checkBtn').hidden=!(running&&!over);
+  if(running&&paused&&!over){$('coverBig').textContent=checking?'Stopped':'Paused';$('coverMsg').textContent=checking?'Checking a card':''}
   const live=running&&!paused,hold=running&&paused;
   syncTapStart();
   // the button only says Pause / Stop for bingo once the music is really playing
@@ -1566,7 +1578,7 @@ function exitPresent(){
 $('rotateX').onclick=()=>document.body.classList.add('hintGone');
 document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&presentFS){presentFS=false;exitPresent()}});
 $('presentBtn').onclick=enterPresent;$('hostExit').onclick=exitPresent;
-$('hostRun').onclick=toggleRun;
+$('hostRun').onclick=()=>{const live=running&&!paused&&musicOn();toggleRun();if(live&&paused)openCheck()}; // Stop for bingo
 $('hostNext').onclick=()=>{const nk=T[T.indexOf(cat)+1];if(isOver()&&nk){history.replaceState({id:'play',cat:nk},'');enterPlay(nk)}};
 document.addEventListener('keydown',e=>{
   // a focused button already handles Space itself; acting here too would toggle twice
@@ -1619,7 +1631,8 @@ function afterGameHTML(){
   return `<div class="nextActs">${nk?'<button class="btn ghost" data-act="another">Check another card</button>':'<button class="btn primary lg" data-act="home">Back to your games</button>'}</div>`;
 }
 function clearChecks(){setPad('pCheckNum','');$('pCheckOut').innerHTML=''}
-$('checkX').onclick=()=>{clearChecks();if(running&&paused)toggleRun()};
+$('checkX').onclick=()=>{clearChecks();checking=false;syncPresent()}; // close the panel; the game stays paused until Resume
+$('checkBtn').onclick=openCheck;
 document.addEventListener('click',e=>{
   const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
   if(a==='resume'){clearChecks();if(running&&paused)toggleRun()}
