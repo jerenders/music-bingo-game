@@ -325,7 +325,6 @@ input[type=text],input[type=number]{background:var(--bg);border:1px solid var(--
 .video.tapThrough::after{display:none}
 .video.tapThrough .cover{display:none}
 .video.tapThrough{border-color:var(--lime);box-shadow:0 0 0 3px var(--lime)}
-.waitTap{opacity:.8}
 /* before the game starts the video area is a Start button: the label is drawn on the cover, but the tap itself passes through to the YouTube player (browsers only start a video from a real tap on it) */
 .coverGo{display:none;position:absolute;left:50%;bottom:4%;transform:translateX(-50%);z-index:3;padding:9px 30px;border-radius:999px;background:var(--btn);color:var(--dark)!important;font-weight:700;font-size:clamp(14px,1.8vw,20px)!important;line-height:1.2;white-space:nowrap;pointer-events:none}
 #play .video.tapStart .cover.canJoin{padding-bottom:20%}
@@ -1474,6 +1473,13 @@ function startGuard(){
     $('nowArtist').textContent='Tap the video to start the music';syncPresent();
   },2500);
 }
+/* a real tap on the YouTube player moves focus into its iframe; that tap is the browser's go-ahead, so ask it to play right after */
+window.addEventListener('blur',()=>setTimeout(()=>{
+  const a=document.activeElement,v=vid();
+  if(!(a&&a.tagName==='IFRAME'&&playerReady&&G&&!$('play').hidden&&!isOver()&&!musicOn()&&(v.classList.contains('tapStart')||v.classList.contains('tapThrough'))))return;
+  try{player.playVideo()}catch(e){}
+  setTimeout(()=>{if(!musicOn()){try{player.playVideo()}catch(e){}}},600);
+},0));
 function beginRun(){running=true;paused=false;showSong(cur(),S.clip);clearInterval(ticker);ticker=setInterval(tick,250);holdWake()} // the game goes live
 function syncTapStart(){
   const on=!!(G&&playerReady&&!running&&!isOver()&&!presenting);
@@ -1535,10 +1541,9 @@ function syncPresent(){
   const live=running&&!paused,hold=running&&paused;
   syncTapStart();
   // the button only says Pause / Stop for bingo once the music is really playing
-  const waiting=live&&!over&&!musicOn(),tapMode=vid().classList.contains('tapThrough'),waitTxt=tapMode?'Tap the video to start':'Starting…',waitHost=tapMode?'Tap the video':'Starting…',liveOn=live&&!waiting;
-  $('hostRun').textContent=over?'Game over':!running?(G.played.length?'Resume':'Start game'):paused?'Resume':waiting?waitHost:'Stop for bingo';
-  if(running&&!paused&&!over)$('startBtn').textContent=waiting?waitTxt:'Pause';
-  $('hostRun').classList.toggle('waitTap',waiting&&tapMode);$('startBtn').classList.toggle('waitTap',waiting&&tapMode);
+  const waiting=live&&!over&&!musicOn(),goTxt=G.played.length?'Resume':'Start game',liveOn=live&&!waiting;
+  $('hostRun').textContent=over?'Game over':!running?(G.played.length?'Resume':'Start game'):paused?'Resume':waiting?goTxt:'Stop for bingo';
+  if(running&&!paused&&!over)$('startBtn').textContent=waiting?goTxt:'Pause';
   $('hostRun').classList.toggle('stop',liveOn);$('startBtn').classList.toggle('stop',liveOn);
   $('hostState').className=live?'live':hold?'hold':'';
   $('hostStateText').textContent=over?(G.winner?`Game over · card ${G.winner} won`:'Game over'):live?(waiting?'Starting the music…':`${extend?'Playing full song':'Playing'} · song ${G.played.length} of ${G.order.length}`):hold?'Stopped · checking a card':`Ready · ${G.order.length-G.pos} songs`;
