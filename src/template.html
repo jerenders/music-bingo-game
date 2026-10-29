@@ -324,6 +324,8 @@ input[type=text],input[type=number]{background:var(--bg);border:1px solid var(--
 .video.tapThrough iframe{pointer-events:auto}
 .video.tapThrough::after{display:none}
 .video.tapThrough .cover{display:none}
+.video.tapThrough{border-color:var(--lime);box-shadow:0 0 0 3px var(--lime)}
+.waitTap{opacity:.8}
 .video .cover{z-index:2}
 .cover{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;padding:18px;background:#0a0b0d}
 .cover b{font-size:clamp(22px,5vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1.05}
@@ -1516,9 +1518,10 @@ function syncPresent(){
   $('rCheck').hidden=!(running&&paused&&!over);$('rail').classList.toggle('checking',!$('rCheck').hidden);document.body.classList.toggle('bingoStop',!!(running&&paused&&!over));
   const live=running&&!paused,hold=running&&paused;
   // the button only says Pause / Stop for bingo once the music is really playing
-  const waiting=live&&!over&&!musicOn(),waitTxt=vid().classList.contains('tapThrough')?'Start music':'Starting…',liveOn=live&&!waiting;
-  $('hostRun').textContent=over?'Game over':!running?(G.played.length?'Resume':'Start game'):paused?'Resume':waiting?waitTxt:'Stop for bingo';
+  const waiting=live&&!over&&!musicOn(),tapMode=vid().classList.contains('tapThrough'),waitTxt=tapMode?'Tap the video to start':'Starting…',waitHost=tapMode?'Tap the video':'Starting…',liveOn=live&&!waiting;
+  $('hostRun').textContent=over?'Game over':!running?(G.played.length?'Resume':'Start game'):paused?'Resume':waiting?waitHost:'Stop for bingo';
   if(running&&!paused&&!over)$('startBtn').textContent=waiting?waitTxt:'Pause';
+  $('hostRun').classList.toggle('waitTap',waiting&&tapMode);$('startBtn').classList.toggle('waitTap',waiting&&tapMode);
   $('hostRun').classList.toggle('stop',liveOn);$('startBtn').classList.toggle('stop',liveOn);
   $('hostState').className=live?'live':hold?'hold':'';
   $('hostStateText').textContent=over?(G.winner?`Game over · card ${G.winner} won`:'Game over'):live?(waiting?'Starting the music…':`${extend?'Playing full song':'Playing'} · song ${G.played.length} of ${G.order.length}`):hold?'Stopped · checking a card':`Ready · ${G.order.length-G.pos} songs`;
