@@ -320,6 +320,10 @@ input[type=text],input[type=number]{background:var(--bg);border:1px solid var(--
 .video iframe{pointer-events:none}
 .video #player,.video iframe{top:-80px!important;bottom:auto!important;height:calc(100% + 160px)!important}
 .video::after{content:"";position:absolute;inset:0;z-index:1}
+/* if the music doesn't start by itself (iPhone and iPad only start a video from a real tap on the player), let taps reach the YouTube player */
+.video.tapThrough iframe{pointer-events:auto}
+.video.tapThrough::after{display:none}
+.video.tapThrough .cover{display:none}
 .video .cover{z-index:2}
 .cover{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;padding:18px;background:#0a0b0d}
 .cover b{font-size:clamp(22px,5vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1.05}
@@ -1293,7 +1297,7 @@ function renderWin(){
   syncPresent();
 }
 $('winChip').onclick=()=>openWinSheet(cat,()=>{renderWin();if(!running||paused)idleScreen();if($('pCheckNum').value)checkCard()});
-function leavePlay(){if(player&&playerReady){try{player.stopVideo()}catch(e){}}running=false;clearInterval(ticker);releaseWake();exitPresent();document.body.classList.remove('bingoStop');$('rCheck').hidden=true}
+function leavePlay(){if(player&&playerReady){try{player.stopVideo()}catch(e){}}clearTimeout(guardT);endTapThrough();running=false;clearInterval(ticker);releaseWake();exitPresent();document.body.classList.remove('bingoStop');$('rCheck').hidden=true}
 const cur=()=>byId[G.order[G.pos]];
 const isOver=()=>!!(G&&(G.done||G.pos>=G.order.length));
 function endGame(winner){
@@ -1386,7 +1390,7 @@ function onState(e){
   if(st===YT.PlayerState.PLAYING){errStreak=0;noCaptions()}
   if(st===YT.PlayerState.PLAYING&&running){
     if(countedPos!==G.pos){countedPos=G.pos;if(!G.played.includes(cur().id)){G.played.push(cur().id);saveGame();renderPlayed();syncPresent()}}
-    clearTimeout(guardT);coverForAudio();
+    clearTimeout(guardT);endTapThrough();coverForAudio();
   }
   if(st===YT.PlayerState.ENDED&&running&&!paused){
     if(!checkedLen){checkedLen=true;const d=player.getDuration()||0;curStart=Math.max(0,Math.floor(d-S.clip-5));player.seekTo(curStart,true);player.playVideo();return}
@@ -1444,17 +1448,24 @@ function tick(){
    say so, and let a tap on the video try again instead of stopping the game. */
 let guardT=null;
 const musicOn=()=>{try{return player.getPlayerState()===YT.PlayerState.PLAYING}catch(e){return false}};
+const vid=()=>document.querySelector('#play .video');
+function endTapThrough(){vid().classList.remove('tapThrough')}
 function startGuard(){
-  clearTimeout(guardT);
+  clearTimeout(guardT);endTapThrough();
   if(!running||paused||musicOn())return;
   $('cover').hidden=false;$('cover').classList.remove('canJoin','stopped');$('coverBig').textContent='Starting the music…';$('coverMsg').textContent='';
-  guardT=setTimeout(()=>{if(running&&!paused&&!musicOn()){$('cover').hidden=false;$('cover').classList.remove('canJoin');$('coverBig').textContent='Tap to start the music';$('coverMsg').textContent='Your browser may be waiting for a tap.'}},3500);
+  guardT=setTimeout(()=>{
+    if(!(running&&!paused&&!musicOn()))return;
+    // the browser won't start it from a script: show the YouTube player itself so a tap on it counts
+    vid().classList.add('tapThrough');
+    $('nowArtist').textContent='Tap the video to start the music';
+  },2500);
 }
 function toggleRun(){
   if(!playerReady||isOver())return;
   if(!running){running=true;paused=false;player.playVideo();showSong(cur(),S.clip);$('startBtn').textContent='Pause';clearInterval(ticker);ticker=setInterval(tick,250);holdWake();startGuard()}
   else if(paused){paused=false;$('cover').classList.remove('stopped');player.playVideo();$('startBtn').textContent='Pause';holdWake();coverForAudio();startGuard()}
-  else{paused=true;player.pauseVideo();$('startBtn').textContent='Resume';$('cover').hidden=false;$('cover').classList.toggle('stopped',S.video==='show');$('coverBig').textContent='Stopped';$('coverMsg').textContent='Checking a card'}
+  else{paused=true;clearTimeout(guardT);endTapThrough();player.pauseVideo();$('startBtn').textContent='Resume';$('cover').hidden=false;$('cover').classList.toggle('stopped',S.video==='show');$('coverBig').textContent='Stopped';$('coverMsg').textContent='Checking a card'}
   syncPresent();renderWin();
   if(paused){setPad('pCheckNum','');$('pCheckOut').innerHTML=''}
 }
