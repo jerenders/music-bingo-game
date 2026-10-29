@@ -1410,7 +1410,8 @@ function advance(){
   if(G.pos>=G.order.length){endGame(null);$('coverBig').textContent='That’s every song';return}
   extend=false;syncExtend();
   const s=cur();curStart=startFor(s);checkedLen=false;
-  showSong(s,S.clip);$('fill').style.width='0';
+  if(running||G.played.length)showSong(s,S.clip); // before the first song starts, a skipped dead video must not reveal the next title
+  $('fill').style.width='0';
   if(running&&!paused)player.loadVideoById({videoId:s.id,startSeconds:curStart});
   else cueCurrent();
   syncPresent();
