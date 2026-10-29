@@ -2,6 +2,8 @@
 
 A music bingo game for hosting nights out. Line up categories, print cards (or let players use their phones), and play song clips from YouTube on a projector. One static page, no server, no accounts.
 
+**Play it:** https://endrs.us/bingo  (personal, non-commercial use only; see [Please note](#please-note) and `NOTICE.md`)
+
 ## What it does
 
 - 36 categories (decades, movie soundtracks, one-hit wonders, hip hop, spooky songs, sugar and sweets, and more), each with roughly 40 to 90 songs.
@@ -43,9 +45,12 @@ https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=VIDEO_ID&form
 
 ## Please note
 
-- **Personal, non-commercial use.** The game plays copyrighted music through embedded YouTube videos. Using YouTube this way at paid or commercial events is against YouTube's terms. A business version would need a licensed music service.
-- Song lists were assembled from memory and from public bingo cards. They may contain mistakes (artists, years, movie names), and many videos are third-party uploads. Nothing was listened to in full, so check clips for content before a night with kids.
-- Not affiliated with YouTube or any music label.
+**This is for personal, non-commercial use only**: family, friends and other free, private gatherings. Do not use it at paid or commercial events, in bars, restaurants or venues, or for anything that earns money. Full details are in [`NOTICE.md`](NOTICE.md).
+
+- The game plays copyrighted music through YouTube's embedded player. YouTube's terms don't allow that at paid or commercial events, and the music belongs to its rights holders. A business version would need a properly licensed music service.
+- If you host from a browser signed in to YouTube Premium, clips play without ads. Without it, ads can appear and delay a clip.
+- Song lists were assembled from memory and from public bingo cards. Artists, years and movie names may be wrong, and many videos are third-party uploads that can disappear. Nothing was listened to in full, so check clips yourself before a night with kids.
+- Not affiliated with YouTube or any music label, venue or bingo company.
 
 ## Credits and licenses
 
