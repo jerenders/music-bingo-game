@@ -1,0 +1,278 @@
+[
+  {
+    "title": "Walk Like an Egyptian",
+    "artist": "The Bangles",
+    "videoId": "Cv6tuzHUuuk",
+    "fromCard": true
+  },
+  {
+    "title": "Living in America",
+    "artist": "James Brown",
+    "videoId": "c5BL4RNFr58",
+    "fromCard": true
+  },
+  {
+    "title": "Istanbul (Not Constantinople)",
+    "artist": "They Might Be Giants",
+    "videoId": "vsQrKZcYtqg",
+    "fromCard": true
+  },
+  {
+    "title": "All Around the World",
+    "artist": "Lisa Stansfield",
+    "videoId": "JVuuatjHGnY",
+    "fromCard": true
+  },
+  {
+    "title": "L.A. Woman",
+    "artist": "The Doors",
+    "videoId": "vHXjcdNIN-Q",
+    "fromCard": true
+  },
+  {
+    "title": "Viva Las Vegas",
+    "artist": "Elvis Presley",
+    "videoId": "9MO1KyNUOIs",
+    "fromCard": true
+  },
+  {
+    "title": "Folsom Prison Blues",
+    "artist": "Johnny Cash",
+    "videoId": "AeZRYhLDLeU",
+    "fromCard": true
+  },
+  {
+    "title": "I Took a Pill in Ibiza",
+    "artist": "Mike Posner (SeeB Remix)",
+    "videoId": "bZK2ubFDiyQ",
+    "fromCard": true
+  },
+  {
+    "title": "Amarillo by Morning",
+    "artist": "George Strait",
+    "videoId": "7HbtHY05PAA",
+    "fromCard": true
+  },
+  {
+    "title": "Wherever You Will Go",
+    "artist": "The Calling",
+    "videoId": "iAP9AF6DCu4",
+    "fromCard": true
+  },
+  {
+    "title": "Welcome to the Jungle",
+    "artist": "Guns N' Roses",
+    "videoId": "o1tj2zJ2Wvg",
+    "fromCard": true
+  },
+  {
+    "title": "The Devil Went Down to Georgia",
+    "artist": "The Charlie Daniels Band",
+    "videoId": "wBjPAqmnvGA",
+    "fromCard": true
+  },
+  {
+    "title": "London Calling",
+    "artist": "The Clash",
+    "videoId": "EfK-WX2pa8c",
+    "fromCard": true
+  },
+  {
+    "title": "Cake by the Ocean",
+    "artist": "DNCE",
+    "videoId": "vWaRiD5ym74",
+    "fromCard": true
+  },
+  {
+    "title": "Venus",
+    "artist": "Bananarama",
+    "videoId": "d4-1ASpdT1Y",
+    "fromCard": true
+  },
+  {
+    "title": "America",
+    "artist": "Neil Diamond",
+    "videoId": "Pg8pj1x9-t4",
+    "fromCard": true
+  },
+  {
+    "title": "My House",
+    "artist": "Flo Rida",
+    "videoId": "uo35R9zQsAI",
+    "fromCard": true
+  },
+  {
+    "title": "Ventura Highway",
+    "artist": "America",
+    "videoId": "Wtc4I9QoK4Q",
+    "fromCard": true
+  },
+  {
+    "title": "Old Town Road",
+    "artist": "Lil Nas X ft. Billy Ray Cyrus",
+    "videoId": "w2Ov5jzm3j8",
+    "fromCard": true
+  },
+  {
+    "title": "Pompeii",
+    "artist": "Bastille",
+    "videoId": "F90Cw4l-8NY",
+    "fromCard": true
+  },
+  {
+    "title": "Born in the U.S.A.",
+    "artist": "Bruce Springsteen",
+    "videoId": "EPhWR4d3FJQ",
+    "fromCard": true
+  },
+  {
+    "title": "Solsbury Hill",
+    "artist": "Peter Gabriel",
+    "videoId": "_OO2PuGz-H8",
+    "fromCard": true
+  },
+  {
+    "title": "Beverly Hills",
+    "artist": "Weezer",
+    "videoId": "HL_WvOly7mY",
+    "fromCard": true
+  },
+  {
+    "title": "No Sleep Till Brooklyn",
+    "artist": "Beastie Boys",
+    "videoId": "07Y0cy-nvAg",
+    "fromCard": true
+  },
+  {
+    "title": "New York, New York",
+    "artist": "Frank Sinatra",
+    "videoId": "le1QF3uoQNg",
+    "fromCard": false
+  },
+  {
+    "title": "Empire State of Mind",
+    "artist": "Jay-Z ft. Alicia Keys",
+    "videoId": "KKDYneoNGWs",
+    "fromCard": false
+  },
+  {
+    "title": "Africa",
+    "artist": "Toto",
+    "videoId": "FTQbiNvZqaY",
+    "fromCard": false
+  },
+  {
+    "title": "Kokomo",
+    "artist": "The Beach Boys",
+    "videoId": "WXB4LspLQE0",
+    "fromCard": false
+  },
+  {
+    "title": "Margaritaville",
+    "artist": "Jimmy Buffett",
+    "videoId": "mrF4nF8VUb4",
+    "fromCard": false
+  },
+  {
+    "title": "Hotel California",
+    "artist": "Eagles",
+    "videoId": "09839DpTctU",
+    "fromCard": false
+  },
+  {
+    "title": "Sweet Home Alabama",
+    "artist": "Lynyrd Skynyrd",
+    "videoId": "ye5BuYf8q4o",
+    "fromCard": false
+  },
+  {
+    "title": "Georgia on My Mind",
+    "artist": "Ray Charles",
+    "videoId": "ggGzE5KfCio",
+    "fromCard": false
+  },
+  {
+    "title": "Take Me Home, Country Roads",
+    "artist": "John Denver",
+    "videoId": "1vrEljMfXYo",
+    "fromCard": false
+  },
+  {
+    "title": "Rocky Mountain High",
+    "artist": "John Denver",
+    "videoId": null,
+    "fromCard": false
+  },
+  {
+    "title": "Down Under",
+    "artist": "Men at Work",
+    "videoId": "XfR9iY5y94s",
+    "fromCard": false
+  },
+  {
+    "title": "Budapest",
+    "artist": "George Ezra",
+    "videoId": "VHrLPs3_1Fs",
+    "fromCard": false
+  },
+  {
+    "title": "Graceland",
+    "artist": "Paul Simon",
+    "videoId": "GP6a-7MP91g",
+    "fromCard": false
+  },
+  {
+    "title": "Kansas City",
+    "artist": "Wilbert Harrison",
+    "videoId": null,
+    "fromCard": false
+  },
+  {
+    "title": "Party in the U.S.A.",
+    "artist": "Miley Cyrus",
+    "videoId": "M11SvDtPBhA",
+    "fromCard": false
+  },
+  {
+    "title": "California Love",
+    "artist": "2Pac",
+    "videoId": "XJZ_i-i3WMU",
+    "fromCard": false
+  },
+  {
+    "title": "Back in the U.S.S.R.",
+    "artist": "The Beatles",
+    "videoId": "nS5_EQgbuLc",
+    "fromCard": false
+  },
+  {
+    "title": "Copacabana",
+    "artist": "Barry Manilow",
+    "videoId": "f_-_9GGl0_I",
+    "fromCard": false
+  },
+  {
+    "title": "Penny Lane",
+    "artist": "The Beatles",
+    "videoId": "S-rB0pHI9fU",
+    "fromCard": false
+  },
+  {
+    "title": "Panama",
+    "artist": "Van Halen",
+    "videoId": "fuKDBPw8wQA",
+    "fromCard": false
+  },
+  {
+    "title": "Holiday Road",
+    "artist": "Lindsey Buckingham",
+    "videoId": null,
+    "fromCard": false
+  },
+  {
+    "title": "Funkytown",
+    "artist": "Lipps Inc.",
+    "videoId": "uhzy7JaU2Zc",
+    "fromCard": false
+  }
+]

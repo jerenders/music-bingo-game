@@ -1,0 +1,1757 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111110">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOSIgZmlsbD0iIzExMTExMCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwIDIwKSBzY2FsZSguOTIpIHRyYW5zbGF0ZSgtMjAgLTIwKSI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTkiIGZpbGw9IiMwZDBkMGMiIHN0cm9rZT0iI2I1ZTU1MCIgc3Ryb2tlLXdpZHRoPSIxLjYiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIxNy42IiBmaWxsPSJub25lIiBzdHJva2U9IiMzZDNkMzgiIHN0cm9rZS13aWR0aD0iLjUiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIxNi40IiBmaWxsPSJub25lIiBzdHJva2U9IiMzZDNkMzgiIHN0cm9rZS13aWR0aD0iLjUiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIxNS4yIiBmaWxsPSJub25lIiBzdHJva2U9IiMzZDNkMzgiIHN0cm9rZS13aWR0aD0iLjUiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIxNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjM2QzZDM4IiBzdHJva2Utd2lkdGg9Ii41Ii8+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTIuOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjM2QzZDM4IiBzdHJva2Utd2lkdGg9Ii41Ii8+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTEuNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjM2QzZDM4IiBzdHJva2Utd2lkdGg9Ii41Ii8+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTAuNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjM2QzZDM4IiBzdHJva2Utd2lkdGg9Ii41Ii8+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iOS4yIiBmaWxsPSJub25lIiBzdHJva2U9IiMzZDNkMzgiIHN0cm9rZS13aWR0aD0iLjUiLz48cGF0aCBkPSJNMjAgMjBMMjcuODIgMy4yM0ExOC41IDE4LjUgMCAwIDEgMzUuMTUgOS4zOVoiIGZpbGw9IiNmZmYiIG9wYWNpdHk9Ii4xOCIvPjxwYXRoIGQ9Ik0yMCAyMEwxMi4xOCAzNi43N0ExOC41IDE4LjUgMCAwIDEgNC44NSAzMC42MVoiIGZpbGw9IiNmZmYiIG9wYWNpdHk9Ii4xIi8+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iNyIgZmlsbD0iI2ZmNmEyYiIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMjAiIHI9IjUuMyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzk0ZjFjIiBzdHJva2Utd2lkdGg9Ii41Ii8+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMS41IiBmaWxsPSIjMTExMTEwIi8+PC9nPjwvc3ZnPg==">
+<style>@font-face{font-family:"Anton";src:url(data:font/woff2;base64,/*ANTON*/) format("woff2");font-weight:400;font-display:swap}/* win type row inside the green Up next panel: full width, same shape as Play */
+.nsWin{display:block;width:100%;margin:16px 0 10px}
+.nsWin .winChip{display:flex;width:100%;box-sizing:border-box;min-height:48px;padding:0 18px;justify-content:flex-start;gap:12px;font-size:16px}
+.nsWin .winChip .chev{margin-left:auto;width:18px;height:18px}
+/* every cover (pre-game, idle, Stopped) is dark with a green title */
+body .cover{background:var(--s1);color:var(--ink)}
+body .cover span{color:var(--muted)}
+body .cover b{color:var(--lime)}
+body:not(.presenting) .cover.stopped{background:linear-gradient(to top,rgba(10,10,9,.85),rgba(10,10,9,.25) 60%);color:#fff}
+body:not(.presenting) .cover.stopped span{color:rgba(255,255,255,.8)}
+/* sheet footer buttons (Done): soft green, not full brightness */
+.sheet .ft .btn.primary{background:rgba(181,229,80,.16);border-color:rgba(181,229,80,.4);color:var(--lime)}
+/* Present mode held upright on a phone: nudge to landscape so a cast / AirPlay mirror fills the TV */
+#rotateHint{display:none}
+@media (orientation:portrait) and (max-width:760px){
+  body.presenting:not(.hintGone) #rotateHint{display:flex;align-items:center;gap:10px;position:fixed;z-index:30;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top,0px));padding:10px 8px 10px 16px;border-radius:16px;background:var(--s2);border:1px solid var(--line2);font-size:14px;font-weight:600;line-height:1.3}
+  #rotateHint button{flex:none;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--muted);font-size:22px;line-height:1}
+}
+/* Present mode text scales with the screen so it reads from across the room (E, 2026-10-16: bigger) */
+@media (min-width:761px){
+  html body.presenting .playLayout{grid-template-columns:minmax(0,1.5fr) minmax(360px,1fr)}
+  html body.presenting #rCat{font-size:clamp(22px,2vw,42px)}
+  /* the win rule is a small reminder, not a headline: one short row, no explanation line */
+  html body.presenting #rWinBox{display:flex;align-items:center;gap:12px;padding:10px 16px}
+  html body.presenting #rWinBox b.big{margin:0;font-size:clamp(15px,1.3vw,28px)}
+  html body.presenting #rWinBox .patWrap.big{margin:0}
+  html body.presenting #rWinBox .patWrap.big .pat{width:clamp(34px,2.8vw,58px);gap:1px}
+  html body.presenting #rWinBox .patWrap.big.trio .pat{width:clamp(22px,1.8vw,38px)}
+  html body.presenting .patNote{display:none}
+  html body.presenting #rCatBox{display:flex;flex-direction:column;justify-content:center}
+  html body.presenting #rJoin .qr,html body.presenting #rail.idle .joinBox .qr{width:clamp(140px,10.5vw,220px)}
+  html body.presenting #rJoin .code{font-size:clamp(18px,1.8vw,38px)}
+  html body.presenting .playedBox .checkTitle{font-size:clamp(20px,1.7vw,34px)}
+  html body.presenting .playedBox li{font-size:clamp(20px,2.1vw,44px)}
+  html body.presenting .nowT{font-size:clamp(36px,5.2vw,104px)}
+  html body.presenting .nowA{font-size:clamp(20px,2.4vw,48px)}
+  html body.presenting #hostBar .btn{font-size:clamp(16px,1.4vw,28px);min-height:clamp(48px,4.2vw,84px);padding:0 clamp(18px,2vw,40px)}
+}
+/* short landscape screens (a phone on its side, cast to a TV): keep the rail usable */
+@media (max-height:520px) and (orientation:landscape){
+  html body.presenting #rail{height:calc(100vh - 134px);max-height:none;gap:8px}
+  html body.presenting .patNote{display:none}
+  html body.presenting .railBox{padding:10px 14px}
+  html body.presenting #rCat{font-size:18px}
+  html body.presenting #rWinBox .patWrap.big{margin:0}
+  html body.presenting #rJoin .qr,html body.presenting #rail.idle .joinBox .qr{width:clamp(80px,24vh,130px)}
+  html body.presenting .playedBox li{font-size:clamp(16px,3.4vh,20px);padding:6px 0}
+}
+/* before the first song there is nothing to list or check yet */
+/* the game shown in Up next is not repeated in the lineup list */
+/* games can run in any order and several can be in progress, so no row is singled out; a started game gets the green Resume (E, 2026-10-16) */
+.game.live:not(.editing) .playBtn{background:var(--btn);border-color:var(--btn);color:var(--dark)}
+/* settings: End game / Restart live below a divider, away from Done */
+.setDanger{display:flex;gap:8px;margin-top:6px;padding-top:16px;border-top:1px solid var(--line)}
+.setDanger .btn{flex:1}
+/* checking a card: once there is a result, it replaces the number pad (Check another card brings the pad back) */
+#rCheck:has(#pCheckOut .verdict:not(.hint)) #pPad{display:none}
+/* game over: the cover already says who won; no dead Start / Play full song buttons or repeated title */
+#play.over #startBtn,#play.over #keepBtn,#play.over .now,#play.over .meter,#play.over .win{display:none}
+/* phone card: no Bingo! / Clear buttons until there is a card to use them on; Try again appears if the songs can't load */
+#phone:not(.ready) .phActs{display:none}
+#phRetry{margin:14px 0 0;width:100%}
+/* win type sheet: icons share one height so the four titles line up */
+.winOpt .patWrap{height:44px;align-items:center}
+html .winOpt .patWrap.trio .pat{width:38px;gap:2px}
+/* play screen: the win rule is a quiet inline line, not a boxed row */
+html .win{background:none;border:0;padding:0 2px;gap:8px;justify-content:flex-start}
+html .win .lbl{flex:none;font-size:13px;color:var(--muted)}
+/* home: join QR and print are quiet extras under Up next, not a second panel */
+html .nightBox{display:flex;gap:10px;background:none;border-radius:0;padding:0;margin:-14px 0 26px}
+.quick{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);font-size:15px;font-weight:600}
+.quick svg{width:18px;height:18px;flex:none}
+.quick:active{background:var(--s1)}
+/* Present mode: which game and how to win live in a small tag on the video; the rail is just the join QR and the played list */
+.gameTag{display:none}
+body.presenting .gameTag{display:block;grid-column:1/-1;grid-row:1;font-size:clamp(16px,1.5vw,32px);font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px}
+html body.presenting #rCatBox,html body.presenting #rWinBox{display:none}
+html body.presenting #rail{grid-template-rows:auto auto minmax(0,1fr)}
+html body.presenting #rail #rJoin,html body.presenting #rail.idle #rJoin{grid-column:1/-1;grid-row:2;flex-direction:row;justify-content:flex-start;align-items:center;text-align:left;gap:clamp(14px,1.6vw,32px)}
+html body.presenting #rail #rJoin .qr,html body.presenting #rail.idle #rJoin .qr{width:clamp(96px,8vw,170px)}
+html body.presenting #rail #rJoin .code{font-size:clamp(20px,2vw,44px)}
+html body.presenting #rPlayed{grid-row:3}
+/* picker: Songs is an icon, Add is a round + until a game is picked, so the names get the room */
+.pickRow .songsBtn{width:36px;padding:0;min-width:0}
+html .pickRow .addBtn:not([aria-pressed="true"]){min-width:0;width:40px;padding:0}
+html .pickRow .addBtn{margin-left:auto}
+.pickRow .addSlot{flex:none;width:92px;display:flex;justify-content:flex-end}
+/* the win is the moment: big words on the cover */
+.cover.winner b{font-size:clamp(48px,11vw,104px)!important;line-height:.95}
+/* short landscape (a phone on its side, e.g. cast from a Pixel): the Check a card pop-up sits at the top and stays clear of the host bar, buttons shrink, the long join code gets small */
+@media (max-height:520px) and (orientation:landscape){
+  html body.bingoStop #rCheck{top:8px;transform:translateX(-50%);width:min(440px,62vw);max-height:calc(100vh - 112px);padding:10px 14px 12px}
+  html body.bingoStop #rCheck:has(#pCheckOut .verdict:not(.hint)){width:min(720px,92vw)}
+  html #pCheckOut:has(.verdict:not(.hint)){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);column-gap:12px;align-items:start}
+  html #pCheckOut .verdict{grid-column:1;grid-row:1}
+  html #pCheckOut .nextActs{grid-column:1;grid-row:2;margin-top:8px}
+  html #pCheckOut .mini{grid-column:2;grid-row:1/span 2;margin-top:0}
+  html #pCheckOut .mini div{min-height:30px;font-size:9px;padding:2px 3px}
+  html body.bingoStop #rCheck .checkTitle{font-size:20px}
+  html #rCheck .checkHead{margin-bottom:6px}
+  html #rCheck .checkX{width:32px;height:32px}
+  html #rCheck .padKey{min-height:34px;font-size:16px}
+  html #rCheck .padNum{min-height:36px}
+  html #rCheck .pad{gap:5px}
+  html body.presenting #hostBar .btn{min-height:42px;font-size:14px;padding:0 14px}
+  html body.presenting #hostBar{padding:8px 10px;bottom:12px}
+  html body.presenting #rail #rJoin .code{font-size:clamp(11px,3.4vh,16px);letter-spacing:.04em}
+}
+/* play screen while a song plays: Stop for bingo is orange like on the TV, and a long game name wraps instead of being cut off */
+#startBtn.stop{background:var(--orange);border-color:var(--orange);color:var(--dark)}
+html .top .title b{white-space:normal;line-height:1.15;font-size:17px}
+/* the win type is editable only before the first song; after that it is just words under the game name */
+#play:not(.fresh) .win{display:none}
+#play.fresh .pw{display:none}
+html .top .title span.pw{display:inline}
+/* host bar buttons never squeeze their words */
+html body.presenting #hostBar .btn{flex:none;white-space:nowrap}
+html #hostRun,html #hostKeep,html #hostExit,html #hostNext{width:auto;min-width:clamp(100px,8vw,170px)}
+html body.presenting #hostBar{width:auto}
+@media (max-height:520px) and (orientation:landscape){
+  /* a phone on its side: keep the title, artist and progress clear of the host bar, which now stays under the right column */
+  html body.presenting .nowT{font-size:clamp(22px,8vh,38px)}
+  html body.presenting .nowA{font-size:clamp(14px,4.4vh,20px)}
+  html body.presenting .stage .video{width:min(100%,calc((100vh - 150px)*1.7778))}
+  html body.presenting #hostBar{max-width:calc(100vw - 590px);gap:6px}
+  html body.presenting #hostBar .btn{flex:1 1 auto;min-height:40px;font-size:13px;padding:0 10px}
+}
+.setDanger[hidden]{display:none}
+/* returning player: Back to your card is a real button at the top of the panel, not a tiny link */
+html #rejoin{width:100%;min-height:52px;font-size:16px;font-weight:600;color:var(--ink);background:transparent;border:1.5px solid var(--ink)}
+@media (min-width:760px){html .landing{align-items:start}}
+.game.done .winChip{display:none}
+.homeFoot{flex-wrap:wrap;gap:4px 12px}
+/* Before the first song the join card sits in the video area (QR, name, how to win, small code) and the played list is already there, empty (E, 2026-10-16) */
+.coverWin{display:none}
+.coverWin .patWrap,.gameTag .patWrap{display:inline-flex;vertical-align:middle;margin:0 .4em}
+.coverWin .patWrap .pat,.gameTag .patWrap .pat{width:clamp(22px,2vw,42px)}
+body.presenting #play.fresh .cover.canJoin .coverWin{display:block;margin-top:8px;color:var(--ink);font-weight:600;font-size:clamp(14px,1.7vw,26px)}
+#play.fresh .cover.canJoin b#coverBig{font-size:clamp(26px,4.2vw,76px)}
+@media (max-height:520px) and (orientation:landscape){
+}
+/* one card language: every panel has a 24px radius and puts its content exactly 20px in from the 16px page gutter (36px from the screen edge) */
+html .choice{padding:22px 19px;border:1px solid var(--line);border-radius:24px}
+html .choice.host{border-color:var(--line)}
+html .nextStep{padding:19px;border-radius:24px}
+html .controlsCol{padding:19px;border-radius:24px}
+.gamesPanel{margin-bottom:6px} /* E, 2026-10-16: the list sits straight on the page, no box; rows keep their spacing */
+.gamesPanel[hidden]{display:none}
+html #joinBox{margin-top:24px}
+html .nsWin .winChip,html .nsWin .winChip:disabled{border:0}
+/* wide screens: the Up next card is one row (title, how to win, play) instead of a stack (E, 2026-10-16) */
+@media (min-width:761px){
+  html .nextStep .head{flex-wrap:nowrap;gap:24px}
+  html .nextStep .head .txt{flex:1 1 auto;min-width:0}
+  html .nextStep .nsWin{width:auto;flex:0 0 300px;margin:0}
+  html .nextStep .head .acts{flex:none;width:auto}
+  html .nextStep .head .acts .btn{width:auto;white-space:nowrap}
+}
+</style>
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Music Bingo</title>
+<style>
+/* Home (game lineup) → Play a game / Print cards. Flat graphite, hairline rules, one blue accent, green only for "played". */
+:root{
+  /* green + orange on near-black */
+  --bg:#111110; --s1:#1b1b19; --s2:#252522; --line:#2c2c29; --line2:#3b3b37;
+  --ink:#f3f2ec; --muted:#a6a59c; --dim:#6e6d66;
+  --lime:#a8d04e; --btn:#93b84a; --dark:#141413; --on-lime:#262c10; --orange:#ff6a2b;
+  --accent:#b5e550; --accent-ink:#141413; --ok:#b5e550; --ok-ink:#141413; --warn:#ff6a2b; --stop:#ff6a2b; --hold:#ffb84d;
+  --display:"Anton","Impact","Arial Narrow Bold",sans-serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --r:14px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+.screen{max-width:1120px;margin:0 auto;padding-top:max(14px,env(safe-area-inset-top));padding-bottom:max(32px,env(safe-area-inset-bottom));padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.fieldLabel{font-size:14px;font-weight:500;color:var(--muted)}
+
+/* top bar */
+.top{display:flex;align-items:center;gap:6px;min-height:44px;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.top .title{flex:1;min-width:0}
+.top .title b{display:block;font-weight:600;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .title span{display:block;font-size:13px;color:var(--muted)}
+.icon{width:40px;height:40px;border-radius:var(--r);display:grid;place-items:center;flex:none;color:var(--ink)}
+.icon:hover{background:var(--s2)}
+.icon svg{width:20px;height:20px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:var(--r);border:1px solid var(--line2);background:var(--s1);font-weight:600;font-size:15px;white-space:nowrap}
+.btn:hover{border-color:var(--muted)}
+.btn svg{width:18px;height:18px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:none;border-color:transparent;color:var(--muted)}
+.btn.ghost:hover{color:var(--ink)}
+.btn.danger{color:var(--warn)}
+.btn:disabled{opacity:.4;cursor:default;filter:none}
+.btn.lg{min-height:52px;font-size:16px}
+
+/* tonight */
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:18px 0 22px}
+.hero h1 .dot{color:var(--accent)}
+.hero h1{margin:0;font-size:clamp(28px,6vw,40px);font-weight:700;letter-spacing:-.025em;line-height:1.05}
+.hero p{margin:6px 0 0;color:var(--muted)}
+.hero .acts{display:flex;gap:8px;flex-wrap:wrap}
+.lineup{border-top:1px solid var(--line)}
+.lineup .game:last-child{border-bottom:0}
+.lineup:empty{display:none}
+.nextStep{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px;border:1px solid var(--line2);border-radius:12px;background:var(--s1);margin-bottom:26px}
+.nextStep .txt{min-width:0}
+.nextStep b{display:block;font-size:21px;font-weight:700;letter-spacing:-.015em;margin-top:4px}
+.nextStep .txt>span:last-child{display:block;color:var(--muted);font-size:14px;margin-top:4px}
+.nextStep .acts{display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width:560px){.nextStep .acts,.nextStep .acts .btn{width:100%}}
+.secTitle{margin:0;font-size:17px;font-weight:600}
+.listHead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.listHead .acts{display:flex;gap:4px}
+.btn.sm{min-height:36px;padding:0 12px;font-size:14px}
+.btn.sm svg{width:16px;height:16px}
+.game .playBtn{min-height:38px;font-size:14px;padding:0 12px;gap:6px}
+.game .playBtn svg{width:13px;height:13px}
+.game{display:grid;grid-template-columns:24px minmax(0,1fr) auto;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.game .n{font-size:17px;font-weight:600;color:var(--dim);text-align:center}
+.game.live .n{color:var(--accent)}
+.game .meta{min-width:0}
+.game .meta b{display:block;font-weight:600;font-size:18px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.game .meta span{font-size:13px;color:var(--muted)}
+.game .meta span.live{color:var(--ok)}
+.game .acts{display:flex;align-items:center;gap:4px}
+.game .edit{display:none}
+.editing .game .edit{display:grid}
+.editing .game .playBtn{display:none}
+.emptyState{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:28px 0;border-bottom:1px solid var(--line);color:var(--muted)}
+.emptyState b{color:var(--ink);font-size:20px}
+.emptyState .btn{margin-top:12px}
+.group{margin-top:28px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--s1)}
+.group .row{display:flex;align-items:center;gap:14px;width:100%;padding:14px 16px;text-align:left;border-bottom:1px solid var(--line)}
+.group .row:last-child{border-bottom:0}
+.group .row:hover{background:var(--s2)}
+.group .row>svg{width:20px;height:20px;flex:none;color:var(--muted)}
+.group .row span{flex:1;min-width:0}
+.group .row b{display:block;font-weight:600;font-size:15px}
+.group .row small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.group .row .go{width:16px;height:16px}
+.group .row.danger b,.group .row.danger>svg{color:var(--warn)}
+
+/* picker + settings sheet */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+@media (min-width:720px){.scrim{align-items:center}}
+.sheet{width:100%;max-width:560px;max-height:88vh;display:flex;flex-direction:column;background:var(--s1);border:1px solid var(--line2);border-radius:10px 10px 0 0}
+@media (min-width:720px){.sheet{border-radius:10px}}
+.sheet .hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.sheet .hd b{font-size:17px;font-weight:600}
+.hdNote{display:block;color:var(--muted);font-size:14px}
+.sheet .bd{overflow:auto;padding:6px 18px 18px;display:flex;flex-direction:column;gap:20px}
+.sheet .ft{display:flex;gap:8px;padding:12px 18px;padding-bottom:max(12px,env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.sheet .ft .btn{flex:1}
+/* focus pass: hide repeats */
+#play.fresh .now,#play.fresh .meter{display:none}
+body.presenting #play.fresh #rCatBox{display:none}
+#hostState{display:none!important}
+#play.fresh #keepBtn{display:none}
+.homeFoot{display:flex;justify-content:center;padding:28px 0 8px}
+.homeFoot[hidden]{display:none}
+.quietLink{background:none;border:0;padding:8px 12px;border-radius:999px;font-size:14px;font-weight:600;color:var(--dim)}
+.quietLink:hover{color:var(--orange)}
+/* song list + picker buttons: Add = primary (green outline, filled once added), Songs = quiet secondary */
+.pickRow{display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--line)}
+.pickRow .pick{flex:1;min-width:0;border-bottom:0}
+.songsBtn,.addBtn{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;border-radius:999px;font-size:14px;font-weight:600;white-space:nowrap}
+.songsBtn svg,.addBtn svg{width:15px;height:15px;flex:none}
+.songsBtn{padding:0 10px;border:0;background:transparent;color:var(--muted)}
+.songsBtn:hover{color:var(--ink);background:var(--s2)}
+.addBtn{min-width:96px;padding:0 14px;border:1.5px solid rgba(181,229,80,.4);background:transparent;color:rgba(181,229,80,.85)}
+.addBtn:hover{background:rgba(181,229,80,.1)}
+.addBtn[aria-pressed="true"]{background:rgba(181,229,80,.16);border-color:rgba(181,229,80,.4);color:var(--lime)}
+@media (max-width:520px){.game .songsBtn{width:36px;padding:0}.game .songsBtn .lbl{display:none}}
+.songRow{display:grid;grid-template-columns:minmax(0,1fr);align-items:center;padding:10px 2px;border-bottom:1px solid var(--line)}
+.songRow .n{color:var(--dim);font-size:13px;text-align:right}
+.songRow .t{display:flex;flex-direction:column;min-width:0}
+.songRow .t b{font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.songRow .t span{color:var(--muted);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pick{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;width:100%;padding:13px 2px;border-bottom:1px solid var(--line);text-align:left}
+.pick b{font-weight:500}
+.pick span{font-size:13px;color:var(--muted)}
+.pick .tag{font-family:var(--mono);font-size:12px;padding:3px 8px;border-radius:4px;border:1px solid var(--line2);color:var(--muted)}
+.pick[aria-pressed="true"] .tag{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+/* segmented options */
+.field{display:flex;flex-direction:column;gap:8px}
+.opts{display:flex;flex-wrap:wrap;border:1px solid var(--line2);border-radius:var(--r);overflow:hidden;width:fit-content;max-width:100%}
+.opts button{min-height:38px;padding:0 14px;font-size:14px;font-weight:500;color:var(--muted);border-right:1px solid var(--line2)}
+.opts button:last-child{border-right:0}
+.opts button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+input[type=text],input[type=number]{background:var(--bg);border:1px solid var(--line2);border-radius:var(--r);padding:0 12px;min-height:42px;font-size:16px}
+
+/* player */
+.playLayout{display:grid;gap:18px}
+@media (min-width:940px){.playLayout{grid-template-columns:minmax(0,1fr) 340px;align-items:start}}
+.stage{display:flex;flex-direction:column;gap:16px;min-width:0}
+.video{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:var(--r);overflow:hidden;background:#000;border:1px solid var(--line)}
+.video #player,.video iframe{position:absolute;inset:0;width:100%;height:100%}
+/* shield: taps on the video never reach YouTube, so the game's own buttons stay in control */
+.video iframe{pointer-events:none}
+.video #player,.video iframe{top:-80px!important;bottom:auto!important;height:calc(100% + 160px)!important}
+.video::after{content:"";position:absolute;inset:0;z-index:1}
+.video .cover{z-index:2}
+.cover{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;padding:18px;background:#0a0b0d}
+.cover b{font-size:clamp(22px,5vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1.05}
+.cover span{color:var(--muted);max-width:46ch;font-size:15px}
+.now{display:block}
+.nowT{font-size:clamp(26px,5.6vw,42px);font-weight:700;letter-spacing:-.025em;line-height:1.05;text-wrap:balance}
+.nowA{font-size:clamp(15px,3.4vw,19px);color:var(--muted);margin-top:4px}
+.nowM{display:block;color:var(--orange);margin-top:2px}
+.meter{display:flex;align-items:center;gap:12px}
+.track{flex:1;height:3px;background:var(--line2);overflow:hidden}
+.track i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s linear}
+.songNo{font-size:13px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.meter .num{font-size:13px;color:var(--muted);min-width:3.2em;text-align:right}
+.controls{display:grid;grid-template-columns:1fr auto;gap:8px}
+.skipLink{align-self:flex-start;font-size:13px;color:var(--dim);text-decoration:underline;text-underline-offset:3px;padding:4px 0}
+.skipLink:hover{color:var(--muted)}
+.skipLink.armed{color:var(--warn);text-decoration:none;font-weight:600}
+#keepBtn[aria-pressed="true"],#hostKeep[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.side{display:flex;flex-direction:column;gap:0;min-width:0;border:1px solid var(--line);border-radius:var(--r);background:var(--s1)}
+.tabs{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
+.tabs button{min-height:44px;font-size:14px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.pane{padding:12px 14px}
+ol.played{list-style:none;margin:0;padding:0;max-height:440px;overflow:auto}
+ol.played li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+ol.played li:last-child{border-bottom:0}
+ol.played .num{color:var(--dim);font-size:14px;text-align:right;padding-top:1px}
+ol.played em{display:block;font-style:normal;color:var(--muted);font-size:13px}
+.empty{color:var(--muted);font-size:14px;margin:6px 0}
+.row{display:flex;gap:8px}.row input{flex:1;min-width:0}
+.mini{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:12px}
+.mini div{min-height:46px;padding:4px;background:var(--s2);font-size:11px;line-height:1.15;overflow:hidden;overflow-wrap:break-word;hyphens:auto;color:var(--muted)}
+.mini .hit{background:var(--ok);color:var(--ok-ink);font-weight:600}
+.mini .free{background:var(--ink);color:var(--bg);display:grid;place-items:center;font-weight:700;font-size:10px;letter-spacing:.06em}
+.mini .tgt{outline:2px solid var(--accent);outline-offset:-2px;position:relative;z-index:1}
+.verdict{margin-top:12px;padding:12px 14px;border-radius:var(--r);border:1px solid var(--line2);background:var(--bg)}
+.verdict b{display:block;font-size:18px;font-weight:700}
+.verdict span{display:block;font-size:14px;color:var(--muted);margin-top:2px}
+.verdict.yes{border-color:var(--ok);background:rgba(62,207,142,.08)}.verdict.yes b{color:var(--ok)}
+.verdict.no b{color:var(--ink)}
+.verdict.hint b{font-size:15px;font-weight:600;color:var(--muted)}
+.nextActs{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.nextActs .btn{width:100%}
+
+/* win type */
+.patWrap{display:flex;gap:6px;flex:none;align-items:center}
+.pat{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;width:38px;flex:none}
+.patWrap.trio .pat{width:22px;gap:1px}
+.pat i{aspect-ratio:1/1;background:var(--line2)}
+.pat i.on{background:var(--accent)}
+.win{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:var(--r);background:var(--s1)}
+.win .lbl{flex:1;min-width:0}
+.win .lbl span{display:block}
+.game .meta .sub{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px}
+.winChip{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 10px 0 8px;border:1px solid var(--line2);border-radius:var(--r);background:var(--s2);font-size:14px;font-weight:600;color:var(--ink);text-align:left}
+.winChip .patWrap .pat{width:20px;gap:1px}.winChip .patWrap.trio .pat{width:14px}
+.winChip .chev{width:14px;height:14px;color:var(--muted);flex:none}
+.winChip:disabled{background:none;border-color:var(--line);cursor:default;opacity:1}
+.winChip:disabled .chev{display:none}
+.winOpts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.winOpt{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:14px;border:1px solid var(--line2);border-radius:8px;background:var(--bg);text-align:left;min-height:132px}
+.winOpt .patWrap .pat{width:44px;gap:2px}.winOpt .patWrap.trio .pat{width:26px}
+.winOpt b{font-size:16px}
+.winOpt span{font-size:13px;color:var(--muted);line-height:1.3}
+.winOpt[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+
+/* present mode: projector view. Restyles the play screen in place (moving the YouTube iframe would reload it). */
+#rail,#hostBar{display:none}
+@media (max-width:520px){#presentBtn{padding:0 12px}}
+.railBox{border:1px solid var(--line);border-radius:var(--r);background:var(--s1);padding:20px}
+.railBox .sub{display:block;color:var(--muted);font-size:14px;margin-top:4px}
+.railBox .sub:empty{display:none}
+.checkTitle{display:block;font-size:17px}
+.railBox b.big{display:block;font-size:clamp(26px,3vw,46px);font-weight:700;letter-spacing:-.02em;line-height:1.05;margin-top:6px;text-wrap:balance}
+.patWrap.big{margin:10px 0 2px;gap:8px}
+.patWrap.big .pat{width:72px;gap:3px}
+.patWrap.big.trio .pat{width:34px;gap:2px}
+.patNote{display:block;color:var(--muted);font-size:14px;margin-top:4px}
+#rWinBox b.big{font-size:clamp(18px,1.6vw,24px)}
+body.presenting .railBox{padding:14px 16px}
+body.presenting #rCat{font-size:clamp(20px,2vw,30px)}
+body.presenting .patNote{font-size:13px}
+.railBox.won{border-color:var(--ok)}
+.railBox.won b.big{color:var(--ok)}
+#pCheckOut .mini div{min-height:40px;font-size:11px}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+/* keep the result clear of the floating control bar when it scrolls into view */
+#pCheckOut>*,#checkOut>*{scroll-margin-bottom:200px}
+.padNum{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;min-height:48px;padding:0 14px;border:1px solid var(--line2);border-radius:var(--r);background:var(--bg)}
+.padNum b{font-family:var(--mono);font-size:26px;font-weight:600}
+.padNum b.empty{color:var(--dim);font-family:var(--sans);font-size:17px;font-weight:500}
+.padKey{min-height:50px;border-radius:var(--r);background:var(--s2);border:1px solid var(--line2);font-size:21px;font-weight:600;font-variant-numeric:tabular-nums}
+.padKey:active{background:var(--line2)}
+.padKey.ok{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-size:16px}
+@media (min-width:761px){body.presenting .padKey{min-height:40px;font-size:18px}body.presenting .padNum{min-height:42px}}
+body.presenting #play{max-width:none;padding-top:max(24px,env(safe-area-inset-top));padding-bottom:max(140px,env(safe-area-inset-bottom));padding-left:max(28px,env(safe-area-inset-left));padding-right:max(28px,env(safe-area-inset-right))}
+body.presenting #play .top,body.presenting .side,body.presenting .win,body.presenting .controls,body.presenting #nextGameBtn{display:none!important}
+body.presenting .playLayout{grid-template-columns:minmax(0,1.8fr) minmax(300px,1fr);align-items:start;gap:28px}
+@media (max-width:760px){body.presenting .playLayout{grid-template-columns:1fr}}
+body.presenting #rail{display:flex;flex-direction:column;gap:12px;min-width:0;max-height:calc(100vh - 170px);overflow:auto}
+body.presenting #rail.checking .patWrap.big .pat{width:40px}
+body.presenting #rail.checking .patWrap.big.trio .pat{width:26px}
+body.presenting #rail.checking #rCatBox{display:none}
+body.presenting .nowT{font-size:clamp(32px,4.4vw,68px)}
+body.presenting .nowA{font-size:clamp(18px,2.1vw,30px)}
+/* host controls: one solid bar along the bottom, fixed button widths so labels can change without shifting */
+body.presenting #hostBar{display:flex;align-items:center;gap:10px;position:fixed;left:max(28px,env(safe-area-inset-left));right:max(28px,env(safe-area-inset-right));bottom:calc(32px + env(safe-area-inset-bottom,0px));z-index:15;background:var(--s1);border:1px solid var(--line2);border-radius:10px;padding:10px 10px 10px 18px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+@media (max-width:760px){body.presenting #hostBar{left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom,0px));padding:8px}}
+#hostState{flex:1;min-width:0;display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#hostState .dot{width:10px;height:10px;border-radius:50%;background:var(--dim);flex:none}
+#hostState.live{color:var(--ink)}#hostState.live .dot{background:var(--ok)}
+#hostState.hold{color:var(--ink)}#hostState.hold .dot{background:var(--hold)}
+#hostBar .btn{min-height:52px;font-size:16px}
+#hostRun{width:230px}
+#hostRun.stop{background:var(--stop);border-color:var(--stop);color:#fff}
+#hostNext{width:auto;min-width:160px;max-width:320px;overflow:hidden;text-overflow:ellipsis}
+#hostNext .sm{display:none}
+@media (max-width:760px){#hostNext .lg{display:none}#hostNext .sm{display:inline}}
+#hostKeep{width:170px}
+#hostExit{width:110px}
+/* phones: main action and Exit share the first row (Exit always the same width);
+   Play full song gets its own full-width row underneath while a song plays */
+@media (max-width:760px){
+  body.presenting #hostBar{display:grid;grid-template-columns:minmax(0,1fr) 104px;gap:10px;padding:10px}
+  #hostState{display:none}
+  #hostRun,#hostNext{grid-column:1;grid-row:1;width:auto;min-width:0;max-width:none}
+  #hostExit{grid-column:2;grid-row:1;width:auto;min-width:0}
+  #hostKeep{grid-column:1/-1;grid-row:2;width:auto;min-width:0}
+  #hostBar .btn{min-height:54px;padding:0 12px;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  body.presenting #play{padding-bottom:200px}
+}
+
+/* print: optional settings tucked away */
+.more{border-top:1px solid var(--line);padding-top:12px}
+.more summary{list-style:none;display:flex;justify-content:space-between;gap:12px;cursor:pointer;font-size:14px;color:var(--muted)}
+.more summary::-webkit-details-marker{display:none}
+.more .chg{color:var(--accent);font-weight:600;flex:none}
+.more[open] .chg{display:none}
+.moreBody{display:flex;flex-direction:column;gap:18px;margin-top:16px}
+.field .hint{font-size:13px;color:var(--dim)}
+
+/* landing */
+.landing{display:grid;gap:14px}
+@media (min-width:760px){.landing{grid-template-columns:1fr 1fr}}
+.choice{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:22px;border:1px solid var(--line2);border-radius:12px;background:var(--s1)}
+.choice.host{border-color:var(--accent)}
+.choice b{font-size:24px;font-weight:700;letter-spacing:-.015em}
+.choice p{margin:0 0 6px;color:var(--muted);font-size:15px;line-height:1.5}
+.choice .btn.primary{width:100%}
+.joinRow{display:flex;gap:8px;width:100%}
+.joinRow input{flex:1;min-width:0;font-family:var(--mono);letter-spacing:.04em;text-transform:uppercase;min-height:52px}
+.joinRow input::placeholder{text-transform:none;letter-spacing:0;font-family:var(--sans)}
+.note.err{color:var(--warn);min-height:0}
+.scanBtn svg{width:22px;height:22px}
+.choice .scanBtn{width:100%;background:var(--line2);border-color:transparent;color:#fff;font-weight:600}
+.choice #showCode{align-self:center}
+.or{align-self:center;font-size:13px;color:var(--dim);margin:2px 0}
+.scanner{position:fixed;inset:0;z-index:40;background:#000;display:flex;align-items:center;justify-content:center}
+.scanner video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scanFrame{position:relative;width:min(68vw,300px);aspect-ratio:1/1;border-radius:18px;box-shadow:0 0 0 9999px rgba(0,0,0,.55);outline:3px solid #fff;outline-offset:-3px}
+.scanTop{position:absolute;top:max(28px,env(safe-area-inset-top));left:20px;right:20px;text-align:center;color:#fff}
+.scanTop b{display:block;font-size:20px}
+.scanTop span{display:block;font-size:15px;opacity:.85;margin-top:4px}
+.scanCancel{position:absolute;bottom:max(28px,env(safe-area-inset-bottom));left:20px;right:20px;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25);color:#fff}
+
+/* join strip on the host home */
+.joinStrip{display:flex;align-items:center;gap:14px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line);width:100%}
+.joinStrip .qr{width:84px;flex:none}
+.joinStrip .txt b{font-family:var(--mono);font-size:19px;letter-spacing:.06em}
+.joinStrip .txt span{font-size:13px}
+.joinStrip .tile{flex:1 1 230px;display:flex;align-items:center;gap:14px;padding:12px;border-radius:16px;background:rgba(0,0,0,.08);color:inherit;border:0;text-align:left;min-width:0}
+.joinStrip .tileBtn{cursor:pointer;font:inherit}
+.nextStep .joinStrip .tileBtn .txt b{font-family:var(--sans);font-weight:700;text-transform:none;letter-spacing:0;font-size:17px;line-height:1.2}
+.joinStrip .ico{width:84px;height:84px;flex:none;border-radius:14px;background:var(--dark);color:var(--lime);display:grid;place-items:center}
+.joinStrip .ico svg{width:40px;height:40px}
+@media (max-width:560px){.joinStrip{flex-wrap:wrap}}
+.nextStep{flex-direction:column;align-items:stretch}
+.nightBox{background:var(--s1);border-radius:24px;padding:16px;margin:-14px 0 26px}
+.nightBox .joinHead{margin-bottom:12px}
+.nightBox .joinHead b{display:block;font-size:15px;font-weight:700}
+.nightBox .joinHead span{font-size:13px;color:var(--muted)}
+.nightBox .joinStrip{margin:0;padding:0;border:0}
+.nightBox .tile{background:var(--s2)}
+.nightBox .txt b{font-family:var(--mono);font-size:19px;letter-spacing:.06em;display:block}
+.nightBox .tileBtn .txt b{font-family:var(--sans);font-weight:700;letter-spacing:0;font-size:17px;line-height:1.2}
+.nightBox .txt span{font-size:13px;color:var(--muted)}
+.nextStep .head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* join code + QR */
+.qr{background:#fff;border-radius:8px;padding:6px;line-height:0}
+.qr svg{width:100%;height:auto;display:block}
+.code{display:block;font-family:var(--mono);font-weight:600;letter-spacing:.06em}
+.joinBox{display:flex;gap:14px;align-items:center}
+.joinBox .qr{width:96px;flex:none}
+/* before a game starts the room needs to scan from across the table, so the code is big; it shrinks once music plays */
+body.presenting #rail.idle .joinBox{flex-direction:column;align-items:flex-start}
+body.presenting #rail.idle .joinBox .qr{width:min(200px,100%)}
+.joinBox .code{font-size:20px;margin-top:4px}
+.joinBox small{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+body.presenting #rail.checking .joinBox{display:none}
+.joinBig{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.joinBig .qr{width:min(240px,70vw)}
+.joinBig .code{font-size:26px}
+.note{color:var(--muted);font-size:14px;line-height:1.5;margin:0}
+.field input{width:100%;font-family:var(--mono);font-size:20px;letter-spacing:.06em;text-transform:uppercase}
+/* phone card */
+#phone{max-width:520px}
+.phTop{display:flex;justify-content:space-between;align-items:center;margin:4px 0 14px}
+.phTop .wm{font-weight:700;font-size:17px}.phTop .wm i{font-style:normal;color:var(--accent)}
+.cardNo{font-size:14px;color:var(--muted);border:1px solid var(--line2);border-radius:var(--r);padding:6px 10px}
+.cardNo b{font-family:var(--mono);color:var(--ink);font-size:16px}
+.phTabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px}
+.phTabs button{flex:none;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line2);background:var(--s1);font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap}
+.phTabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.phWin{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;margin-bottom:10px}
+.phWin .patWrap .pat{width:24px;gap:1px}.phWin .patWrap.trio .pat{width:16px}
+.phCard{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.phCard button{aspect-ratio:1/1;border-radius:6px;background:var(--s1);border:1px solid var(--line2);padding:4px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden;min-width:0}
+.phCard .t{font-size:clamp(9px,2.7vw,13px);font-weight:600;line-height:1.1;overflow-wrap:break-word;hyphens:auto}
+.phCard .a{font-size:clamp(8px,2.1vw,10px);color:var(--muted);margin-top:2px;line-height:1.05}
+.phCard button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.phCard button.on .a{color:rgba(255,255,255,.8)}
+.phCard button.free{background:var(--ink);color:var(--bg);font-weight:700;font-size:12px;letter-spacing:.1em}
+.phActs{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:16px}
+.phActs .btn.primary{width:100%;font-size:20px;min-height:58px}
+#phMsg{margin-top:10px;text-align:center}
+.phOver{position:fixed;inset:0;z-index:30;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px}
+.phOver>b{font-size:clamp(56px,20vw,120px);font-weight:800;letter-spacing:-.02em;color:var(--ok);line-height:1}
+.phOver .big{font-size:clamp(28px,9vw,48px);font-weight:700}
+.phOver .big span{font-family:var(--mono)}
+.phOver>span{color:var(--muted)}
+.phOver .btn{margin-top:18px}
+
+/* print */
+.printGrid{display:grid;gap:18px}
+@media (min-width:860px){.printGrid{grid-template-columns:320px minmax(0,1fr);align-items:start}}
+.controlsCol{display:flex;flex-direction:column;gap:18px;border:1px solid var(--line);border-radius:var(--r);padding:16px;background:var(--s1)}
+.checks{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.check{display:grid;grid-template-columns:22px 28px minmax(0,1fr);align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--line);text-align:left}
+.box{width:18px;height:18px;border:1.5px solid var(--line2);border-radius:3px;display:grid;place-items:center}
+.check[aria-pressed="true"] .box{background:var(--accent);border-color:var(--accent)}
+.check[aria-pressed="true"] .box::after{content:"";width:9px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:translateY(-1px) rotate(-45deg)}
+.check .num{color:var(--dim);font-size:13px}
+.summary{font-size:14px;color:var(--muted)}
+#printSummary b{color:var(--ink);font-size:16px}
+#printSummary span{display:block;margin-top:2px}
+.preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr));gap:14px;min-width:0}
+.pk,.pg{display:contents}
+.card.blank{background:none;border:1px dashed var(--line2);display:grid;place-items:center;min-height:180px;color:var(--dim);font-size:13px}
+.card{background:#fff;color:#111;padding:12px;border-radius:2px}
+.card .hd{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;border-bottom:2px solid #111;padding-bottom:6px}
+.card .hd b{font-size:17px;font-weight:700;letter-spacing:-.01em;line-height:1.1}
+/* the card number is what the host types to check a card: small, top right of the card (E, 2026-10-16: not big, not circled; the game number is not printed) */
+.card .hd b{flex:1;min-width:0}
+.card .no{flex:none;margin-left:auto;font-family:var(--mono);font-weight:700;font-size:13px;line-height:1;white-space:nowrap;color:#333}
+.card .no span{font-family:var(--sans);font-size:.72em;letter-spacing:.1em;text-transform:uppercase;color:#666;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid #111;border-left:1px solid #111}
+.grid .c{border-right:1px solid #111;border-bottom:1px solid #111;aspect-ratio:1/1;padding:4px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden}
+.grid .c .s .yr{font-weight:400;opacity:.65;white-space:nowrap}
+.grid .c .s{font-weight:600;font-size:clamp(9px,2.5vw,12.5px);line-height:1.12;text-wrap:balance;overflow-wrap:anywhere}
+.grid .c .r{font-size:clamp(8px,2vw,10px);color:#666;margin-top:2px;line-height:1.05}
+.grid .c.free{background:#111;color:#fff;font-weight:700;font-size:11px;letter-spacing:.12em}
+
+/* ===== theme: green & orange on dark ===== */
+body{background:var(--bg)}
+.btn{border-radius:999px;background:var(--s1);border-color:var(--line2);color:var(--ink)}
+.btn.primary{background:var(--btn);border-color:var(--btn);color:var(--dark)}
+.btn.ghost{background:none;border-color:transparent}
+.icon:hover{background:var(--s2)}
+/* logo */
+.logo{display:block;margin:0;font-weight:400;line-height:1}
+.lockup{display:inline-flex;flex-direction:column;align-items:flex-start}
+.lockup small{font-family:var(--sans);font-size:.24em;font-weight:700;letter-spacing:.42em;text-transform:uppercase;color:var(--orange);margin:0 0 .12em .06em}
+.lockup .word{display:inline-flex;align-items:baseline;font-family:var(--display);color:var(--lime);letter-spacing:.01em}
+.lockup .disc{width:.9em;height:.9em;margin:0 0 -.015em .04em;flex:none;transform:translateY(.0207em)}
+.hero h1.logo{font-size:clamp(56px,15vw,84px)}
+#tonight .hero{justify-content:center;text-align:center;margin:8px 0 32px}
+#tonight h1.logo{display:flex;justify-content:center} /* block flex: no line-box strut above the lockup */
+#tonight .lockup{align-items:center}
+#tonight .lockup small{margin-left:.42em}
+.phTop .wm{font-size:34px}
+.phTop .wm .lockup small{font-size:.28em}
+/* lime moments */
+.choice{border:0;border-radius:24px}
+.choice{background:var(--s1)}
+.choice b,.nextStep .txt b{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:.01em;font-size:clamp(30px,7vw,40px);line-height:1}
+.nextStep{background:var(--s1);border:1px solid var(--line);border-radius:24px;color:var(--ink)}
+.nextStep .txt b{color:var(--ink)}
+.nextStep .txt>span:last-child,.nextStep .joinStrip .txt span{color:var(--muted)}
+.nextStep .joinStrip{border-top-color:var(--line)}
+.nextStep .joinStrip .txt b{font-family:var(--mono);font-size:19px;text-transform:none;letter-spacing:.06em;line-height:1.3}
+.nextStep .btn.primary{background:var(--btn);border-color:var(--btn);color:var(--dark)}
+.nextStep .btn:not(.primary){background:var(--s2);border-color:var(--line2);color:var(--ink)}
+.joinRow input,.padNum,input[type=text],input[type=number]{background:var(--s2);border-color:var(--line2);color:var(--ink)}
+/* cards */
+.group,.side,.panel,.sheet,.controlsCol,.railBox,.win,.video,.choice{border-radius:20px}
+.group,.side,.controlsCol,.railBox,.win{background:var(--s1);border-color:transparent}
+.sheet{background:var(--s1);border-color:var(--line)}
+.scrim{background:rgba(0,0,0,.6)}
+.game .n{color:var(--orange)}
+/* chips and pills */
+.opts{border-radius:999px;background:var(--s1)}
+.opts button[aria-pressed="true"]{background:var(--btn);color:var(--dark)}
+.winChip{border-radius:999px;background:var(--s2);border-color:var(--line2)}
+.phTabs button{background:var(--s1);border-color:var(--line2);color:var(--muted)}
+.phTabs button[aria-selected="true"]{background:var(--btn);color:var(--dark);border-color:var(--btn)}
+.pick[aria-pressed="true"] .tag{background:var(--btn);border-color:var(--btn);color:var(--dark)}
+.tabs button[aria-selected="true"]{border-bottom-color:var(--lime)}
+/* win pattern diagrams */
+.pat i{background:#3b3b37}.pat i.on{background:var(--orange)}
+.winOpt{background:var(--s2);border-color:transparent;border-radius:18px}
+.winOpt[aria-pressed="true"]{background:var(--btn);border-color:var(--btn);box-shadow:none;color:var(--dark)}
+.winOpt[aria-pressed="true"] span{color:var(--on-lime)}
+.winOpt[aria-pressed="true"] .pat i{background:rgba(0,0,0,.32)}.winOpt[aria-pressed="true"] .pat i.on{background:#0a0a09}
+/* player */
+.video{background:#000;border-color:transparent}
+.cover{background:var(--btn);color:var(--dark)}
+.cover b{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(30px,6vw,56px);line-height:1}
+.cover span{color:var(--on-lime)}
+.nowT{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:.01em;line-height:1}
+.nowA{color:var(--muted)}
+.track{background:var(--line2);height:5px;border-radius:9px}
+.track i{background:var(--orange);border-radius:9px}
+.songNo::before{content:"♪ ";color:var(--orange)}
+.mini div{background:var(--s2);border-radius:6px}
+.mini .hit{background:var(--btn);color:var(--dark)}
+.mini .free{background:var(--orange);color:var(--dark)}
+.mini .tgt{outline-color:var(--orange)}
+.verdict{border-radius:16px;background:var(--s2);border-color:transparent}
+.verdict.yes{background:var(--btn);border-color:var(--btn)}.verdict.yes b,.verdict.yes span{color:var(--dark)}
+.padKey{background:var(--s2);border-color:transparent;border-radius:14px}
+.padKey.ok{background:var(--btn);color:var(--dark)}
+.padNum{border-radius:14px}
+.skipLink.armed{color:var(--orange)}
+/* present mode */
+body.presenting .railBox b.big{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:.01em;line-height:1}
+#rWinBox.won{background:var(--btn);color:var(--dark)}
+#hostBar{border-radius:999px}
+body.presenting #hostBar{background:var(--s1);border-color:var(--line);box-shadow:0 10px 30px rgba(0,0,0,.5)}
+#hostRun.stop{background:var(--orange);border-color:var(--orange);color:var(--dark)}
+#hostState.live .dot{background:var(--btn)}
+@media (max-width:760px){body.presenting #hostBar{border-radius:24px}}
+/* phone card */
+.phCard button{background:var(--s1);border-color:transparent;border-radius:10px}
+.phCard button.on{background:var(--btn);border-color:var(--btn);color:var(--dark)}
+.phCard button.on .a{color:var(--on-lime)}
+.phCard button.free{background:var(--orange);color:var(--dark)}
+.cardNo{background:var(--s1);border-color:transparent;border-radius:999px}
+.phOver{background:var(--btn)}
+.phOver>b{color:var(--dark);font-family:var(--display);font-weight:400;font-size:clamp(84px,28vw,160px)}
+.phOver .scribble{width:min(70vw,260px);margin-top:-14px}
+.phOver .scribble path{stroke:var(--dark)}
+.phOver .big{color:var(--dark);font-family:var(--display);font-weight:400;text-transform:uppercase}
+.phOver .big span{color:#c2410c}
+.phOver>span{color:var(--on-lime)}
+.phOver .btn{background:var(--dark);border-color:var(--dark);color:#fff}
+/* print screen + misc */
+.check[aria-pressed="true"] .box{background:var(--btn);border-color:var(--btn)}
+.check[aria-pressed="true"] .box::after{border-color:var(--dark)}
+.more .chg{color:var(--orange)}
+.qr{border-radius:14px}
+
+/* print preview: each .pg is drawn as a letter page, with the same proportions as the printed one (sizes in cqw = % of page width, 1in = 11.76cqw) */
+@media screen{
+  .preview .pg{display:block;container-type:inline-size;aspect-ratio:8.5/11;background:#fff;color:#111;padding:2.94cqw;border-radius:2px;box-shadow:0 2px 14px rgba(0,0,0,.45);overflow:hidden}
+  .preview .pg .card{width:92.9cqw;margin:0 auto;padding:0;border-radius:0}
+  .preview .pg.two{display:grid;grid-template-rows:1fr 1fr}
+  .preview .pg.two .card{align-self:center}
+  .preview .pg .card .hd{margin-bottom:.7cqw;padding-bottom:.5cqw}
+  .preview .pg .card .hd b{font-size:2.45cqw}
+  .preview .pg .card .no{font-size:2.4cqw}
+  .preview .pg .grid .c{aspect-ratio:auto;height:10.1cqw;padding:.5cqw}
+  .preview .pg .grid .c .s{font-size:2.29cqw;line-height:1.12;overflow-wrap:normal}
+  .preview .pg .card.blank{visibility:hidden;border:0;height:55.3cqw;min-height:0}
+  .preview .pg.one .card{width:94.1cqw;margin-top:1.2cqw}
+  .preview .pg.one .card .hd{margin-bottom:1.2cqw;padding-bottom:1cqw}
+  .preview .pg.one .card .hd b{font-size:3.6cqw}
+  .preview .pg.one .card .no{font-size:3.1cqw}
+  .preview .pg.one .grid .c{height:20.9cqw}
+  .preview .pg.one .grid .c .s{font-size:3.1cqw}
+}
+@media print{
+  @page{size:letter;margin:.25in}
+  html,body{background:#fff}
+  body>*:not(#print){display:none!important}
+  #print{display:block!important;padding:0;max-width:none}
+  #print .top,#print .controlsCol{display:none!important}
+  .printGrid,.preview{display:block}
+  .card{width:7.9in;margin:0 auto;padding:0;break-inside:avoid}
+  .card .hd{margin-bottom:6px;padding-bottom:4px}
+  .card.blank{visibility:hidden;border:0;height:4.7in;min-height:0}
+  .pg{display:block;break-after:page}
+  /* two-up: the page is split into two equal halves at the fold (page centre); each card is centred in its half */
+  .pg.two{height:10.45in;display:grid;grid-template-rows:1fr 1fr;overflow:hidden}
+  .pg.two .card{align-self:center}
+  .pg:last-child{break-after:auto}
+  .grid .c{aspect-ratio:auto;height:.86in}
+  .grid .c .s{font-size:14pt;line-height:1.12;-webkit-hyphens:manual;hyphens:manual;overflow-wrap:normal;word-break:normal}
+  .pg.one .card{width:8in;margin-top:.1in}
+  .pg.one .card .hd{margin-bottom:10px;padding-bottom:8px}
+  .pg.one .grid .c{height:1.78in}
+  .pg.one .grid .c .s{font-size:19pt}
+  .pg.one .card .hd b{font-size:22pt}
+  .card .no{font-size:14pt}
+  .pg.one .card .no{font-size:18pt}
+  .card .hd b{font-size:15pt}
+}
+/* TV control bar hugs its buttons */
+@media (min-width:761px){body.presenting #hostBar{left:auto}}
+/* join screen before the first song: big QR in the cover */
+.cover .cQR,.cover .cCode{display:none}
+.cTxt{display:flex;flex-direction:column;gap:6px;min-width:0}
+#play.fresh .cover.canJoin{flex-direction:row;align-items:center;justify-content:flex-start;gap:5%;padding:5%}
+#play.fresh .cover.canJoin .cQR{display:block;height:100%;max-height:100%;aspect-ratio:1;flex:none;background:#fff;border-radius:16px;padding:2.5%}
+#play.fresh .cover.canJoin .cQR svg,#play.fresh .cover.canJoin .cQR img{display:block;width:100%;height:100%}
+#play.fresh .cover.canJoin .cCode{display:block;font-family:var(--mono);font-weight:600;font-size:clamp(12px,1.4vw,20px);letter-spacing:.06em;text-transform:none;margin-top:6px;color:var(--muted)}
+#play.fresh .cover.canJoin span{font-size:clamp(14px,1.6vw,22px)}
+body.presenting #play.fresh #rJoin{display:none}
+/* played list on the TV */
+body.presenting #rail:not(.checking){overflow:hidden}
+body.presenting #rail.checking #rPlayed{display:none}
+.playedBox{display:flex;flex-direction:column;min-height:0;flex:1 1 auto}
+.playedBox .checkTitle .num{color:var(--dim);font-weight:600;margin-left:4px}
+.playedBox ol{list-style:none;margin:8px 0 0;padding:0;overflow:auto;min-height:0}
+.playedBox li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;padding:6px 0;border-top:1px solid var(--line);font-size:16px;line-height:1.3}
+.playedBox li:first-child{border-top:0}
+.playedBox li .num{color:var(--dim);text-align:right;font-size:14px;padding-top:1px}
+.playedBox li em{font-style:normal;color:var(--muted);font-size:14px}
+.playedBox li:first-child .t{color:var(--lime)}
+.playedBox.before li:first-child .t{color:inherit}
+/* no text selection or long-press callout on the logo and tap targets */
+.logo,.lockup,.phTop,.phCard,.phTabs,button{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+/* Stop for bingo (Present mode): the card check opens as a centered modal over a dimmed screen; the host bar stays on top */
+body.bingoStop #rCheck{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:40;width:min(clamp(340px,24vw,480px),92vw);max-height:min(84vh,calc(100vh - 150px));overflow:auto;padding:14px 16px 16px;border:1px solid var(--line2);border-radius:20px;background:var(--s1);box-shadow:0 0 0 100vmax rgba(0,0,0,.7),0 24px 60px rgba(0,0,0,.6)}
+.checkHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.checkX{width:36px;height:36px;border:0;border-radius:50%;background:var(--s2);color:var(--ink);font-size:22px;line-height:1}
+#rCheck .padKey{min-height:44px}
+#rCheck .padNum{min-height:44px}
+#rCheck .mini{margin-top:8px}
+#rCheck .mini div{min-height:34px;padding:3px;font-size:10px}
+#rCheck .verdict{padding:10px 12px}
+#rCheck .nextActs{margin-top:8px}
+body.bingoStop #rCheck .checkTitle{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:24px;letter-spacing:.01em;line-height:1}
+body.bingoStop #hostBar{z-index:45}
+.video{cursor:pointer}
+/* phone card: big song names, no artist */
+.phCard{gap:6px}
+.phCard button{padding:7px 5px;aspect-ratio:1/1.12}
+.phCard .t{-webkit-hyphens:none;hyphens:none}
+.phCard .t.brk{-webkit-hyphens:manual;hyphens:manual}
+.phCard .t.brk2{overflow-wrap:anywhere}
+.phCard .t{display:block;max-width:100%;font-weight:700;line-height:1.08;letter-spacing:-.01em;overflow-wrap:normal;word-break:normal;hyphens:manual}
+/* phone card: calmer chrome around the card */
+.phTop{margin:0 0 12px}
+.phTop .wm{font-size:28px}
+.cardNo{font-size:13px;padding:6px 12px}
+.cardNo b{font-size:15px}
+.phTabs{gap:6px;margin-bottom:12px}
+.phTabs button{min-height:34px;padding:0 12px;font-size:13px}
+.phWin{font-size:13px;margin-bottom:12px}
+.phCard .t{font-weight:650;line-height:1.12;letter-spacing:0}
+#phMsg{font-size:13px;color:var(--dim)}
+#phone.marked #phMsg{display:none}
+.phActs{margin-top:18px}
+/* TV rail layout: game name + win pattern on the left, a bigger join QR top right, played list below with bigger type */
+body.presenting #rail{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto minmax(0,1fr);align-content:start;gap:12px;height:calc(100vh - 170px);max-height:none}
+body.presenting #rCatBox{grid-column:1;grid-row:1}
+body.presenting #rWinBox{grid-column:1;grid-row:2}
+body.presenting #rJoin{grid-column:2;grid-row:1/span 2;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;padding:14px}
+body.presenting #rJoin .qr{width:clamp(130px,11vw,190px)}
+body.presenting #rJoin .code{font-size:clamp(16px,1.3vw,22px);margin:0}
+body.presenting #rJoin small{display:none}
+body.presenting #rPlayed{grid-column:1/-1;grid-row:3}
+body.presenting #rCheck{grid-column:1/-1}
+body.presenting #play.fresh #rWinBox{grid-row:1}
+body.presenting .playedBox .checkTitle{font-size:20px}
+body.presenting .playedBox li{grid-template-columns:34px minmax(0,1fr);gap:10px;padding:9px 0;font-size:clamp(18px,1.45vw,24px);line-height:1.25}
+body.presenting .playedBox li .num{font-size:.75em;padding-top:.2em}
+body.presenting .playedBox li em{font-size:.78em}
+/* stopped on the regular play screen: keep the paused video visible under a light tint (Present mode uses the dark Stopped cover) */
+body:not(.presenting) .cover.stopped{background:linear-gradient(to top,rgba(10,10,9,.85),rgba(10,10,9,.25) 60%);color:#fff}
+body:not(.presenting) .cover.stopped span{color:rgba(255,255,255,.8)}
+.qrBtn{border:0;cursor:pointer;flex:none}
+.qrBtn:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<!-- TONIGHT -->
+<section class="screen" id="tonight">
+  <div class="hero">
+    <div><h1 class="logo"><span class="lockup"><small>Music</small><span class="word">BING<svg class="disc" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#0d0d0c" stroke="#b5e550" stroke-width="1.6"/><circle cx="20" cy="20" r="17.6" fill="none" stroke="#3d3d38" stroke-width=".5"/><circle cx="20" cy="20" r="16.4" fill="none" stroke="#3d3d38" stroke-width=".5"/><circle cx="20" cy="20" r="15.2" fill="none" stroke="#3d3d38" stroke-width=".5"/><circle cx="20" cy="20" r="14" fill="none" stroke="#3d3d38" stroke-width=".5"/><circle cx="20" cy="20" r="12.8" fill="none" stroke="#3d3d38" stroke-width=".5"/><circle cx="20" cy="20" r="11.6" fill="none" stroke="#3d3d38" stroke-width=".5"/><circle cx="20" cy="20" r="10.4" fill="none" stroke="#3d3d38" stroke-width=".5"/><circle cx="20" cy="20" r="9.2" fill="none" stroke="#3d3d38" stroke-width=".5"/><path d="M20 20L27.82 3.23A18.5 18.5 0 0 1 35.15 9.39Z" fill="#fff" opacity=".18"/><path d="M20 20L12.18 36.77A18.5 18.5 0 0 1 4.85 30.61Z" fill="#fff" opacity=".1"/><circle cx="20" cy="20" r="7" fill="#ff6a2b"/><circle cx="20" cy="20" r="5.3" fill="none" stroke="#c94f1c" stroke-width=".5"/><circle cx="20" cy="20" r="1.5" fill="#111110"/></svg></span></span></h1><p id="tonightSub"></p></div>
+  </div>
+  <div class="landing" id="landing" hidden>
+    <div class="choice host">
+      <b>I'm running the game</b>
+      <p>Pick the songs and show it on a TV.</p>
+      <button class="btn primary lg" id="hostStart">Host a game</button>
+    </div>
+    <div class="choice">
+      <b>I'm playing</b>
+      <p>Scan the QR code on the host's screen.</p>
+      <button class="btn lg" id="rejoin" hidden></button>
+      <button class="btn lg scanBtn" id="scanBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg>Scan QR code</button>
+      <button class="btn ghost sm" id="showCode">Enter a code instead</button>
+      <div id="codeRow" hidden style="width:100%">
+      <div class="joinRow"><input type="text" id="landCode" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Code, like 7Q-H96-E3A" aria-label="Game code"><button class="btn lg" id="landJoin">Join</button></div>
+      </div>
+      <p class="note err" id="landErr"></p>
+    </div>
+  </div>
+  <div class="nextStep" id="nextStep" hidden></div>
+  <div class="gamesPanel" id="gamesPanel" hidden>
+  <div class="listHead" id="listHead" hidden>
+    <h2 class="secTitle">Your games</h2>
+    <div class="acts">
+      <button class="btn ghost sm" id="editBtn">Edit games</button>
+      <button class="btn ghost sm" id="addBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Add game</button>
+    </div>
+  </div>
+  <div class="lineup" id="lineup"></div>
+  </div>
+  <div class="nightBox" id="joinBox" hidden></div>
+  <div class="homeFoot" id="homeFoot" hidden><button class="quietLink" id="addSolo" hidden>+ Add another game</button><button class="quietLink" id="clearBtn" title="Clears the games and progress on this device"><span id="clearLabel">Start over</span></button></div>
+</section>
+
+<!-- PLAYER -->
+<section class="screen" id="play" hidden>
+  <div class="top">
+    <button class="icon" data-back aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <div class="title"><b id="playTitle"></b><span id="playSub"></span></div>
+    <button class="btn" id="presentBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></svg><span class="pl">Present</span></button>
+    <button class="icon" id="setBtn" aria-label="Game settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></button>
+  </div>
+  <div class="playLayout">
+    <div class="stage">
+      <div class="video">
+        <div id="player"></div>
+        <div class="cover" id="cover"><div class="qr cQR" id="cQR"></div><div class="cTxt"><b id="coverBig"></b><span id="coverMsg"></span><span class="coverWin" id="coverWin"></span><b class="cCode" id="cCode"></b></div></div>
+      </div>
+      <div class="now">
+        <div><div class="nowT" id="nowTitle">Ready</div><div class="nowA" id="nowArtist">&nbsp;</div></div>
+      </div>
+      <div class="meter"><span class="songNo" id="songNo"></span><div class="track"><i id="fill"></i></div><span class="num" id="timeLeft"></span></div>
+      <button class="skipLink" id="skipLink" hidden>Skip this song</button>
+      <div class="win"><div class="lbl">To win</div><button class="winChip" id="winChip" aria-label="How to win this game"></button></div>
+      <div class="controls">
+        <button class="btn primary lg" id="startBtn" disabled>Start game</button>
+        <button class="btn lg" id="keepBtn" aria-pressed="false" disabled>Play full song</button>
+      </div>
+      <button class="btn" id="nextGameBtn" hidden></button>
+    </div>
+    <aside id="rail">
+      <div class="gameTag" id="gameTag"></div>
+      <div class="railBox" id="rCatBox"><b class="big" id="rCat"></b><span class="sub" id="rGame"></span></div>
+      <div class="railBox" id="rWinBox"><div class="patWrap big" id="rPat"></div><b class="big" id="rPatName"></b><span class="patNote" id="rPatNote" hidden>Across, down or diagonal</span></div>
+      <div class="railBox joinBox" id="rJoin"><div class="qr" id="rQR"></div><div><b class="code" id="rCode"></b><small>Scan to play, or enter the code at <span id="rHost"></span></small></div></div>
+      <div class="railBox playedBox" id="rPlayed" hidden><b class="checkTitle">Played <span class="num" id="rPlayedN"></span></b><ol id="rPlayedList"></ol><p class="empty" id="rPlayedEmpty">Songs appear here as they play.</p></div>
+    </aside>
+    <div class="side">
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tabPlayed" aria-selected="true">Played <span class="num" id="playedCount">0</span></button>
+      </div>
+      <div class="pane" id="panePlayed"><ol class="played" id="played"></ol><p class="empty" id="playedEmpty">Songs appear here as they play.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="railBox" id="rCheck" role="dialog" aria-label="Check a card" hidden>
+  <div class="checkHead"><b class="checkTitle">Check a card</b><button type="button" class="checkX" id="checkX" aria-label="Back to the game">×</button></div>
+  <input type="hidden" id="pCheckNum"><div class="pad" id="pPad"></div>
+  <div id="pCheckOut"></div>
+</div>
+<div id="rotateHint" role="status"><span>Casting? Turn your phone sideways to fill the TV.</span><button type="button" id="rotateX" aria-label="Dismiss">×</button></div>
+<div id="hostBar">
+  <div id="hostState"><span class="dot"></span><span id="hostStateText">Ready</span></div>
+  <button class="btn primary lg" id="hostRun">Start game</button>
+  <button class="btn lg" id="hostKeep" aria-pressed="false" disabled>Play full song</button>
+  <button class="btn lg" id="hostNext" hidden>Next game</button>
+  <button class="btn lg" id="hostExit">Exit</button>
+</div>
+
+<!-- PRINT -->
+<section class="screen" id="print" hidden>
+  <div class="top">
+    <button class="icon" data-back aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <div class="title"><b>Print cards</b></div>
+  </div>
+  <div class="printGrid">
+    <div class="controlsCol">
+      <div class="field"><span class="fieldLabel">Games</span><div class="checks" id="printGames"></div><button class="btn ghost sm" id="printAdd">+ Add a game</button></div>
+      <p class="summary" id="printSummary"></p>
+      <div class="more" id="printMore">
+        <div class="moreBody" style="margin-top:0">
+          <div class="field"><label class="fieldLabel" for="countIn">How many players</label><input type="number" id="countIn" inputmode="numeric" min="1" max="200" style="width:110px"><span class="hint">Each player gets a card for every game. Extra cards don't hurt.</span></div>
+          <div class="field"><label class="fieldLabel" for="cardFrom">First card number</label><input type="number" id="cardFrom" min="1" value="1" style="width:110px"><span class="hint">Only change this to print more cards later without repeating numbers.</span></div>
+        </div>
+      </div>
+      <button class="btn primary lg" id="printBtn">Print</button>
+    </div>
+    <div class="preview" id="preview"></div>
+  </div>
+</section>
+
+<!-- ADD GAME SHEET -->
+<div class="scrim" id="pickScrim" hidden>
+  <div class="sheet" role="dialog" aria-label="Add games">
+    <div class="hd"><b>Choose games</b><span class="hdNote" id="pickCount"></span></div>
+    <div class="bd" id="pickList" style="gap:0"></div>
+    <div class="ft"><button class="btn primary" id="pickDone">Done</button></div>
+  </div>
+</div>
+
+<!-- SONG LIST SHEET (host preview) -->
+<div class="scrim" id="songsScrim" hidden>
+  <div class="sheet" role="dialog" aria-labelledby="songsTitle">
+    <div class="hd"><div><b id="songsTitle" style="display:block"></b><span class="hdNote" id="songsNote"></span></div></div>
+    <div class="bd" id="songsList" style="gap:0"></div>
+    <div class="ft"><button class="btn primary" id="songsDone">Done</button></div>
+  </div>
+</div>
+
+<!-- PHONE CARDS SHEET (host) -->
+<div class="scrim" id="phonesScrim" hidden>
+  <div class="sheet" role="dialog" aria-label="Players join here">
+    <div class="hd"><b>Players join here</b></div>
+    <div class="bd">
+      <div class="joinBig"><div class="qr" id="pQR"></div><b class="code" id="pCode"></b><span class="hdNote">Scan, or enter this code on the Music Bingo page</span></div>
+      <p class="note">Players scan this to get a card on their phone. When someone calls bingo, check the card number they show you.</p>
+    </div>
+    <div class="ft"><button class="btn primary" id="phonesDone">Done</button></div>
+  </div>
+</div>
+
+<!-- QR SCANNER (player) -->
+<div class="scanner" id="scanner" hidden>
+  <video id="scanVideo" playsinline muted></video>
+  <div class="scanFrame"></div>
+  <div class="scanTop"><b>Scan the code</b><span id="scanMsg">Point your camera at the QR code on the host's screen.</span></div>
+  <button class="btn lg scanCancel" id="scanCancel">Cancel</button>
+</div>
+
+<!-- PHONE CARD (player mode) -->
+<section class="screen" id="phone" hidden>
+  <div class="phTop"><span class="wm logo"><span class="lockup"><small>Music</small><span class="word">BING<svg class="disc" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#0d0d0c" stroke="#b5e550" stroke-width="1.6"/><circle cx="20" cy="20" r="17.6" fill="none" stroke="#3d3d38" stroke-width=".5"/><circle cx="20" cy="20" r="16.4" fill="none" stroke="#3d3d38" stroke-width=".5"/><circle cx="20" cy="20" r="15.2" fill="none" stroke="#3d3d38" stroke-width=".5"/><circle cx="20" cy="20" r="14" fill="none" stroke="#3d3d38" stroke-width=".5"/><circle cx="20" cy="20" r="12.8" fill="none" stroke="#3d3d38" stroke-width=".5"/><circle cx="20" cy="20" r="11.6" fill="none" stroke="#3d3d38" stroke-width=".5"/><circle cx="20" cy="20" r="10.4" fill="none" stroke="#3d3d38" stroke-width=".5"/><circle cx="20" cy="20" r="9.2" fill="none" stroke="#3d3d38" stroke-width=".5"/><path d="M20 20L27.82 3.23A18.5 18.5 0 0 1 35.15 9.39Z" fill="#fff" opacity=".18"/><path d="M20 20L12.18 36.77A18.5 18.5 0 0 1 4.85 30.61Z" fill="#fff" opacity=".1"/><circle cx="20" cy="20" r="7" fill="#ff6a2b"/><circle cx="20" cy="20" r="5.3" fill="none" stroke="#c94f1c" stroke-width=".5"/><circle cx="20" cy="20" r="1.5" fill="#111110"/></svg></span></span></span><span class="cardNo">Card <b id="phNum">–</b></span></div>
+  <div class="phTabs" id="phTabs" role="tablist"></div>
+  <div class="phWin" id="phWin"></div>
+  <div class="phCard" id="phCard"></div>
+  <p class="note" id="phMsg"></p>
+  <button class="btn lg" id="phRetry" hidden>Try again</button>
+  <div class="phActs"><button class="btn primary lg" id="phBingo">Bingo!</button><button class="btn ghost sm" id="phClear">Clear my marks</button></div>
+  <div class="phOver" id="phOver" hidden>
+    <b>BINGO!</b>
+    <svg class="scribble" viewBox="0 0 220 26" aria-hidden="true"><path d="M4 15c40-9 95-12 140-8 26 2 48 5 72 3-30 3-90 6-120 9-22 2-40 3-56 1" fill="none" stroke="#141414" stroke-width="4" stroke-linecap="round"/></svg>
+    <div class="big">Card <span id="phOverNum"></span></div>
+    <span id="phOverGame"></span>
+    <span>Hold this up for the host to check.</span>
+    <button class="btn lg" id="phOverClose">Back to my card</button>
+  </div>
+</section>
+
+<!-- HOW TO WIN SHEET -->
+<div class="scrim" id="winScrim" hidden>
+  <div class="sheet" role="dialog" aria-labelledby="winTitle">
+    <div class="hd"><div><b id="winTitle" style="display:block">How do players win?</b><span class="hdNote" id="winFor"></span></div></div>
+    <div class="bd"><div class="winOpts" id="winOpts"></div></div>
+    <div class="ft"><button class="btn" id="winCancel">Cancel</button></div>
+  </div>
+</div>
+
+<!-- SETTINGS SHEET -->
+<div class="scrim" id="setScrim" hidden>
+  <div class="sheet" role="dialog" aria-label="Game settings">
+    <div class="hd"><b>Game settings</b></div>
+    <div class="bd">
+      <div class="field"><span class="fieldLabel">Clip length</span><div class="opts" id="clipOpts"></div></div>
+      <div class="field"><span class="fieldLabel">Song name</span><div class="opts" id="nameOpts"></div></div>
+      <div class="field"><span class="fieldLabel">Video</span><div class="opts" id="videoOpts"></div></div>
+      <div class="setDanger"><button class="btn" id="endBtn">End game</button><button class="btn danger" id="restartBtn">Restart</button></div>
+    </div>
+    <div class="ft"><button class="btn primary" id="setDone">Done</button></div>
+  </div>
+</div>
+
+<script>/*QRLIB*/</script>
+<script>
+const CATS = /*DATA*/{};
+const MOV = /*MOVIES*/{}; // category -> song title -> movie it is known for (movie soundtrack categories only; shown to the host while playing)
+const movieOf=(k,t)=>((MOV[k]||{})[t])||'';
+const YEARS = /*YEARS*/{}; // "title|artist" -> release year (kept out of song data so song-list hashes don't change)
+const withYear=s=>YEARS[s.t+'|'+s.a]?`${s.t} (${YEARS[s.t+'|'+s.a]})`:s.t;
+const HY = /*HYPH*/{}; // long word -> same word with soft hyphens (built with pyphen)
+
+/* ---------- helpers ---------- */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k,d){try{const v=localStorage.getItem('mb2_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('mb2_'+k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem('mb2_'+k)}catch(e){}}};
+function seedFrom(str){let h=1779033703^str.length;for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19}return()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);return(h^=h>>>16)>>>0}}
+function mulberry(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuffle(arr,r=Math.random){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+// SONGS holds the locked list for each game in play (host lineup or a phone's joined night)
+const SONGS={};
+const pool=k=>SONGS[k]||CATS[k].songs;
+function cardCells(k,num){const s=shuffle(pool(k),mulberry(seedFrom(k+'#'+num)())).slice(0,24);const out=[];let j=0;for(let i=0;i<25;i++)out.push(i===12?null:s[j++]);return out}
+const LOCAL=location.protocol==='file:'||location.protocol==='content:';
+
+/* settings */
+/* settings4 (2026-10-15): clips default to 1 minute and every song starts at 1:00 (no longer a setting); older saved settings carry over except those two */
+const S=Object.assign({clip:60,name:'show',video:'show',count:10,artist:true,group:'packet'},(({clip,startAt,...rest})=>rest)(store.get('settings3',{})),store.get('settings4',{}));S.startAt=60;
+const saveS=()=>store.set('settings4',S);
+// one-time switch to the new 30-second default for anyone who saved the old 1-minute default
+/* how to win, chosen per game */
+const PATS=[['line','Any line'],['edges','Outside edges'],['x','Both diagonals'],['full','Full card']];
+const patName=p=>(PATS.find(x=>x[0]===p)||PATS[0])[1];
+let PAT=store.get('patterns',{});
+const patOf=k=>PAT[k]||'line';
+const setPat=(k,v)=>{PAT[k]=v;store.set('patterns',PAT)};
+const EDGES=[0,1,2,3,4,5,9,10,14,15,19,20,21,22,23,24],DIAG=[0,6,12,18,24,4,8,16,20];
+function patCells(p){return [...Array(25)].map((_,i)=>p==='full'||(p==='line'&&i>=10&&i<15)||(p==='edges'&&EDGES.includes(i))||(p==='x'&&DIAG.includes(i)))}
+const grid=cells=>`<div class="pat">${[...Array(25)].map((_,i)=>`<i class="${cells.includes(i)?'on':''}"></i>`).join('')}</div>`;
+const patIcon=p=>p==='line'?grid([10,11,12,13,14])+grid([2,7,12,17,22])+grid([0,6,12,18,24]):grid(patCells(p).map((on,i)=>on?i:-1));
+const paintPat=(el,p)=>{el.innerHTML=patIcon(p);el.classList.toggle('trio',p==='line')};
+const PAT_HELP={line:'Any row, column or diagonal',edges:'All 16 squares around the border',x:'Corner to corner, both ways',full:'Every square on the card'};
+const CHEV='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+const chipIcon=p=>`<span class="patWrap">${p==='line'?grid([10,11,12,13,14]):patIcon(p)}</span>`;
+const chipHTML=p=>`${chipIcon(p)}${patName(p)}${CHEV}`;
+let winTarget=null,winDone=null;
+function openWinSheet(k,onDone){
+  winTarget=k;winDone=onDone;const gi=T.indexOf(k);
+  $('winFor').textContent=(gi>=0?`Game ${gi+1} · `:'')+CATS[k].name;
+  $('winOpts').innerHTML=PATS.map(([v,l])=>`<button class="winOpt" data-v="${v}" aria-pressed="${patOf(k)===v}"><span class="patWrap${v==='line'?' trio':''}">${patIcon(v)}</span><b>${l}</b><span>${PAT_HELP[v]}</span></button>`).join('');
+  $('winScrim').hidden=false;
+}
+$('winOpts').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;setPat(winTarget,b.dataset.v);$('winScrim').hidden=true;winDone&&winDone()};
+$('winCancel').onclick=()=>$('winScrim').hidden=true;
+$('winScrim').onclick=e=>{if(e.target===$('winScrim'))$('winScrim').hidden=true};
+function opts(el,list,key,onChange){
+  el.innerHTML='';
+  for(const [val,label] of list){const b=document.createElement('button');b.type='button';b.textContent=label;b.setAttribute('aria-pressed',S[key]===val);
+    b.onclick=()=>{S[key]=val;saveS();[...el.children].forEach(x=>x.setAttribute('aria-pressed',x===b));onChange&&onChange()};el.append(b)}
+}
+
+/* tonight: ordered list of category keys */
+let T=store.get('tonight',[]).filter(k=>CATS[k]);
+let LOCK=store.get('locks',{});      // {key:{h,songs}} song list frozen when the game joined the lineup
+let NIGHT=store.get('night',null);   // short id that ties phones to this night
+const CODE_CHARS='23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+function syncLocks(){
+  for(const k of T)if(!LOCK[k])LOCK[k]={h:CATS[k].h,songs:CATS[k].songs};
+  for(const k of Object.keys(LOCK))if(!T.includes(k))delete LOCK[k];
+  for(const k of Object.keys(SONGS))delete SONGS[k];
+  for(const k of T)SONGS[k]=LOCK[k].songs;
+  if(!T.length)NIGHT=null;else if(!NIGHT)NIGHT=[0,0].map(()=>CODE_CHARS[Math.floor(Math.random()*CODE_CHARS.length)]).join('');
+  store.set('locks',LOCK);store.set('night',NIGHT);
+}
+const saveT=()=>{store.set('tonight',T);syncLocks()};
+const PATCH={line:'l',edges:'e',x:'x',full:'f'};
+function joinCode(){return T.length?[NIGHT,...T.map(k=>CATS[k].c+LOCK[k].h.slice(0,2).toUpperCase())].join('-'):''}
+function joinURL(){return `${location.origin}${location.pathname}#j=${joinCode()}~${T.map(k=>PATCH[patOf(k)]).join('')}`}
+function qrSVG(text){try{const q=qrcode(0,'M');q.addData(text);q.make();return q.createSvgTag({cellSize:4,margin:2,scalable:true})}catch(e){return ''}}
+let PRINTED=store.get('printed',[]);const savePrinted=()=>store.set('printed',PRINTED);
+const gameState=k=>store.get('game_'+k,null);
+// a game's win type is fixed once its first song has played
+const started=k=>{const g=gameState(k);return !!(g&&(g.played.length||g.done))};
+
+/* ---------- navigation ---------- */
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.hidden=s.id!==id);window.scrollTo(0,0)}
+function go(id,data){history.pushState({id,...data},'');route({id,...data})}
+function route(st){
+  const id=st?.id||'tonight';
+  if(id!=='play')leavePlay();
+  if(id==='play')enterPlay(st.cat);
+  if(id==='print')enterPrint(st.only);
+  if(id==='tonight')renderTonight();
+  show(id);
+}
+let PHONE_MODE=false;
+/* sheets and the scanner count as a history step, so Back / swipe-back closes them instead of leaving the page */
+const OVERLAYS=['pickScrim','songsScrim','phonesScrim','winScrim','setScrim','scanner'].map(id=>$(id));
+const openOverlay=()=>OVERLAYS.find(o=>o&&!o.hidden);
+let backClosing=false,skipPop=false;
+window.addEventListener('popstate',e=>{
+  const o=openOverlay();
+  if(o){backClosing=true;if(o.id==='scanner')stopScan();else o.hidden=true;backClosing=false;return}
+  if(skipPop){skipPop=false;return}
+  if(!PHONE_MODE)route(e.state);
+});
+const overlayWatch=new MutationObserver(recs=>{
+  for(const r of recs){
+    const o=r.target;
+    if(!o.hidden){if(!history.state?.modal)history.pushState({...history.state,modal:1},'')}
+    else if(!backClosing&&!openOverlay()&&history.state?.modal){skipPop=true;history.back()}
+  }
+});
+OVERLAYS.forEach(o=>o&&overlayWatch.observe(o,{attributes:true,attributeFilter:['hidden']}));
+document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>history.length>1?history.back():route({id:'tonight'}));
+history.replaceState({id:'tonight'},'');
+
+/* ---------- tonight ---------- */
+let editing=false;
+function statusOf(k){const g=gameState(k);if(g&&g.done)return['',g.winner?`Done · card ${g.winner} won`:'Done'];if(!g||!g.played.length)return['',''];if(g.pos>=g.order.length)return['','Done'];return['live','In progress']}
+function renderTonight(){
+  const L=$('lineup'),has=T.length>0;L.classList.toggle('editing',editing);
+  $('gamesPanel').hidden=!has;$('listHead').hidden=!has;$('lineup').hidden=false;$('homeFoot').hidden=!has;$('addSolo').hidden=true;
+  $('editBtn').hidden=T.length<2&&!editing;$('editBtn').textContent=editing?'Done':'Edit games';
+  $('tonightSub').textContent=has?`${T.length} game${T.length>1?'s':''} lined up.`:'Pick a few categories. Each one is a game, played in order.';
+  renderNextStep();
+  $('landing').hidden=has;$('tonightSub').hidden=true; // the lineup speaks for itself
+  if(!has){L.innerHTML='';renderRejoin();return}
+  L.innerHTML='';
+  const nextI=T.findIndex(k=>!gameOver(k));
+  T.forEach((k,i)=>{
+    const [cls,txt]=statusOf(k);
+    const row=document.createElement('div');row.className='game'+(cls?' '+cls:'')+(i===nextI?' isNext':'')+(gameOver(k)?' done':'');
+    row.innerHTML=`<div class="n">${i+1}</div>
+      <div class="meta"><b>${esc(CATS[k].name)}</b><div class="sub"><button class="winChip" data-win="${k}" ${started(k)?'disabled':''} aria-label="How to win ${esc(CATS[k].name)}: ${patName(patOf(k))}">${chipHTML(patOf(k))}</button><button class="songsBtn" data-songs="${k}" aria-label="See the songs in ${esc(CATS[k].name)}" title="Songs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r=".6" fill="currentColor"/><circle cx="4.5" cy="12" r=".6" fill="currentColor"/><circle cx="4.5" cy="18" r=".6" fill="currentColor"/></svg><span class="lbl">Songs</span></button>${started(k)?`<span class="${cls}">${txt}</span>`:''}</div></div>
+      <div class="acts">
+        <button class="icon edit" data-up="${i}" aria-label="Move up" ${i===0?'disabled style="opacity:.3"':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button>
+        <button class="icon edit" data-del="${i}" aria-label="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        <button class="btn playBtn" data-play="${k}">${gameOver(k)?'':'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>'}${cls==='live'?'Resume':gameOver(k)?'View':'Play'}</button>
+      </div>`;
+    L.append(row);
+  });
+  L.querySelectorAll('[data-play]').forEach(b=>b.onclick=()=>go('play',{cat:b.dataset.play}));
+  L.querySelectorAll('[data-win]').forEach(b=>b.onclick=()=>openWinSheet(b.dataset.win,renderTonight));
+  L.querySelectorAll('[data-songs]').forEach(b=>b.onclick=()=>openSongs(b.dataset.songs));
+  L.querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>{const i=+b.dataset.up;if(i>0){[T[i-1],T[i]]=[T[i],T[i-1]];saveT();renderTonight()}});
+  L.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{T.splice(+b.dataset.del,1);saveT();if(T.length<2)editing=false;renderTonight()});
+}
+const gameOver=k=>{const g=gameState(k);return !!(g&&(g.done||g.pos>=g.order.length))};
+/* the single most useful next action: print cards that aren't printed yet, otherwise play the next unfinished game */
+function renderNextStep(){
+  const box=$('nextStep'),jb=$('joinBox');box.hidden=jb.hidden=!T.length;if(!T.length)return;
+  const i=T.findIndex(k=>!gameOver(k));
+  if(i<0){
+    box.innerHTML=`<div class="head"><div class="txt"><b>Every game has been played</b><span>Add another game, or start over for a new night.</span></div><div class="acts"><button class="btn primary lg" id="nsAdd">Add a game</button></div></div>`;
+    jb.hidden=true;$('nsAdd').onclick=openPick;return;
+  }
+  box.hidden=true; // the current game is highlighted in the list below instead of a header card (E, 2026-10-16)
+  $('joinBox').innerHTML=`<button class="quick" id="nsQR"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v.01M14 21h.01M17 21h4v-4"/></svg>Join QR</button><button class="quick" id="nsPrint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V4h10v5M7 17H5a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-2"/><rect x="7" y="14" width="10" height="6" rx="1"/></svg>Print cards</button>`;
+  $('nsQR').onclick=()=>{paintJoin($('pQR'),$('pCode'));$('phonesScrim').hidden=false};
+  $('nsPrint').onclick=()=>go('print',{});
+}
+$('editBtn').onclick=()=>{editing=!editing;renderTonight()};
+$('clearBtn').onclick=()=>{
+  const lbl=$('clearLabel');
+  if(lbl.textContent!=='Tap again to start over'){lbl.textContent='Tap again to start over';setTimeout(()=>lbl.textContent='Start over',3000);return}
+  T.forEach(k=>store.del('game_'+k));T=[];saveT();PRINTED=[];savePrinted();editing=false;lbl.textContent='Start over';renderTonight();
+};
+
+/* add-games sheet */
+let added=[];
+function renderPick(){
+  const L=$('pickList');L.innerHTML='';
+  for(const [k,v] of Object.entries(CATS)){
+    const inT=T.indexOf(k);
+    if(v.hide&&inT<0)continue; // retired: kept only so old codes and lineups still load
+    const row=document.createElement('div');row.className='pickRow';
+    const b=document.createElement('button');b.className='pick';b.setAttribute('aria-pressed',inT>=0);
+    b.innerHTML=`<div><b>${esc(v.name)}</b></div>`;
+    const toggle=()=>{const i=T.indexOf(k);if(i>=0){T.splice(i,1);added=added.filter(x=>x!==k)}else{T.push(k);added.push(k)}saveT();renderPick()};
+    b.onclick=toggle;
+    const sb=document.createElement('button');sb.className='songsBtn';sb.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r=".6" fill="currentColor"/><circle cx="4.5" cy="12" r=".6" fill="currentColor"/><circle cx="4.5" cy="18" r=".6" fill="currentColor"/></svg>';sb.title='See the songs';sb.setAttribute('aria-label',`See the songs in ${v.name}`);sb.onclick=()=>openSongs(k);
+    const ab=document.createElement('button');ab.className='addBtn';ab.setAttribute('aria-pressed',inT>=0);
+    ab.innerHTML=inT>=0?`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Game ${inT+1}`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>`;
+    ab.setAttribute('aria-label',inT>=0?`Remove ${v.name} (game ${inT+1})`:`Add ${v.name}`);ab.onclick=toggle;
+    const slot=document.createElement('span');slot.className='addSlot';slot.append(ab);row.append(b,sb,slot);L.append(row);
+  }
+  $('pickCount').textContent='Played in the order you pick';$('pickDone').disabled=!T.length;
+}
+/* song list sheet: every song in a category (the locked list if it's in tonight's lineup), A to Z */
+function openSongs(k){
+  const list=[...pool(k)].sort((a,b)=>a.t.localeCompare(b.t,undefined,{sensitivity:'base',ignorePunctuation:true}));
+  $('songsTitle').textContent=CATS[k].name;$('songsNote').textContent='A to Z';
+  const L=$('songsList');L.innerHTML='';
+  list.forEach((s,i)=>{const r=document.createElement('div');r.className='songRow';
+    r.innerHTML=`<span class="t"><b>${esc(withYear(s))}</b><span>${esc(s.a)}${movieOf(k,s.t)?` · ${esc(movieOf(k,s.t))}`:''}</span></span>`;L.append(r)});
+  L.scrollTop=0;$('songsScrim').hidden=false;
+}
+function closeSongs(){$('songsScrim').hidden=true}
+$('songsDone').onclick=closeSongs;
+$('songsScrim').onclick=e=>{if(e.target===$('songsScrim'))closeSongs()};
+function openPick(){added=[];renderPick();$('pickScrim').hidden=false}
+$('addBtn').onclick=openPick;
+$('pickDone').onclick=closePick;
+$('pickScrim').onclick=e=>{if(e.target===$('pickScrim'))closePick()};
+function closePick(){$('pickScrim').hidden=true;renderTonight();if(!$('print').hidden)enterPrint([...printSel,...added])} // picking games from the print screen adds them to the lineup and ticks them
+
+/* ---------- print ---------- */
+let printSel=[];
+$('countIn').value=S.count;
+$('countIn').oninput=()=>{const n=parseInt($('countIn').value);if(n>=1){S.count=Math.min(200,n);saveS();renderPreview()}};
+$('countIn').onblur=()=>{$('countIn').value=S.count};
+$('cardFrom').oninput=renderPreview;
+function enterPrint(only){
+  printSel=T.filter(k=>only&&only.length?only.includes(k):true);
+  const L=$('printGames');L.innerHTML='';
+  T.forEach((k,i)=>{const b=document.createElement('button');b.className='check';b.setAttribute('aria-pressed',printSel.includes(k));
+    b.innerHTML=`<span class="box"></span><span class="num">${i+1}</span><span>${esc(CATS[k].name)}</span>`;
+    b.onclick=()=>{printSel=printSel.includes(k)?printSel.filter(x=>x!==k):T.filter(x=>x===k||printSel.includes(x));b.setAttribute('aria-pressed',printSel.includes(k));renderPreview()};
+    L.append(b)});
+  renderPreview();
+}
+function cardHTML(k,num){
+  let h=`<div class="card"><div class="hd"><b>${esc(CATS[k].name)}</b><div class="no"><span>Card</span> ${num}</div></div><div class="grid">`;
+  for(const c of cardCells(k,num))h+=c?`<div class="c"><div class="s">${esc(shortTitle(c.t))}${YEARS[c.t+'|'+c.a]?` <span class="yr">${YEARS[c.t+'|'+c.a]}</span>`:''}</div></div>`:`<div class="c free">FREE</div>`;
+  return h+'</div></div>';
+}
+/* layout follows the number of games: 1 game = one big card per page; 2+ games = two per page,
+   one player's cards together (2 games = one page; 3-4 = one double-sided sheet; more = more sheets) */
+const perPage=()=>printSel.length>1?2:1;
+function cardList(){
+  const from=Math.max(1,parseInt($('cardFrom').value)||1),nums=[...Array(S.count)].map((_,i)=>from+i),out=[];
+  const games=T.filter(k=>printSel.includes(k));
+  if(games.length<2){for(const k of games)for(const n of nums)out.push([k,n]);return out}
+  const block=games.length===2?2:4; // each player starts on a fresh page (2 games) or a fresh sheet (3+ games, double-sided)
+  for(const n of nums){const set=games.map(k=>[k,n]);while(set.length%block)set.push([null,n]);out.push(...set)}
+  return out;
+}
+function renderPreview(){
+  const list=cardList(),g=printSel.length,pages=Math.ceil(list.length/perPage());
+  let msg='<span>Tick a game to print its cards.</span>';
+  if(g===1)msg=`<b>Print single-sided.</b> One card per page. With 3 or 4 games, each player can get one double-sided sheet that folds in half.`;
+  else if(g===2)msg=`<b>Print single-sided.</b> Each player gets one page with both games on it. Cut it in half. With 3 or 4 games, print double-sided and fold instead.`;
+  else if(g){const per=Math.ceil(g/4);msg=`<b>Print double-sided.</b> ${per>1?`Each player gets ${per} sheets, 4 games per sheet.`:'Each player gets one sheet.'} In the print dialog, choose two-sided, flip on the long edge. Then fold each sheet in half${g<=4?`: games 1 and 2 inside, ${g===3?'game 3':g===4?'games 3 and 4':''} outside`:''}. Or cut it for separate cards.`}
+  $('printSummary').innerHTML=msg;
+  $('printBtn').disabled=!g;
+  // preview the first few pages so phones stay quick; the full set is built at print time
+  const shown=list.slice(0,perPage()*2);
+  $('preview').innerHTML=buildHTML(shown)+(list.length>shown.length?`<p class="summary" style="grid-column:1/-1">Preview of the first ${shown.length} cards. All ${list.length} print.</p>`:'');
+}
+function buildHTML(list){
+  const per=perPage();let h='';
+  for(let i=0;i<list.length;i+=per)h+=`<div class="pg${per===1?' one':' two'}">${list.slice(i,i+per).map(([k,n])=>k?cardHTML(k,n):'<div class="card blank"><span>Left blank</span></div>').join('')}</div>`;
+  return h;
+}
+$('printBtn').onclick=()=>{
+  PRINTED=[...new Set([...PRINTED,...printSel])];savePrinted();
+  $('preview').innerHTML=buildHTML(cardList());
+  setTimeout(()=>{window.print();setTimeout(renderPreview,500)},50);
+};
+
+/* ---------- game ---------- */
+let cat=null,G=null,byId={},player=null,playerReady=false,apiLoading=false,running=false,paused=false,curStart=0,ticker=null,checkedLen=false,countedPos=-1,wake=null,advancing=false,errStreak=0,extend=false;
+
+const saveGame=()=>store.set('game_'+cat,G);
+function newGame(){G={order:shuffle(pool(cat)).map(s=>s.id),pos:0,played:[]};saveGame()}
+function enterPlay(k){
+  cat=k;byId={};pool(cat).forEach(s=>byId[s.id]=s);
+  G=gameState(cat);
+  if(G){G.order=G.order.filter(id=>byId[id]);G.played=G.played.filter(id=>byId[id]);
+    G.order=G.order.concat(shuffle(pool(cat).map(s=>s.id).filter(id=>!G.order.includes(id))));G.pos=Math.min(G.pos,G.order.length)}
+  else newGame();
+  running=false;paused=false;countedPos=-1;errStreak=0;
+  const gi=T.indexOf(cat);
+  $('playTitle').textContent=CATS[cat].name;renderWin();
+  $('startBtn').textContent=isOver()?'Game over':G.played.length?'Resume':'Start game';
+  renderPlayed();idleScreen();$('pCheckOut').innerHTML='';setPad('pCheckNum','');
+  renderNextGame();syncPresent();
+  if(isOver()){$('startBtn').disabled=true;return}
+  if(LOCAL){$('startBtn').disabled=true;return}
+  if(playerReady)cueCurrent();else loadAPI();
+}
+function renderWin(){
+  const p=patOf(cat),gi=T.indexOf(cat);
+  const locked=!!(G&&(G.played.length||G.done||running));
+  $('winChip').innerHTML=chipHTML(p);$('winChip').disabled=locked;
+  $('playSub').innerHTML=(gi>=0&&T.length>1?`Game ${gi+1} of ${T.length}`:'')+`<span class="pw">${gi>=0&&T.length>1?' · ':''}${esc(patName(p))}</span>`;
+  syncPresent();
+}
+$('winChip').onclick=()=>openWinSheet(cat,()=>{renderWin();if(!running||paused)idleScreen();if($('pCheckNum').value)checkCard()});
+function leavePlay(){if(player&&playerReady){try{player.stopVideo()}catch(e){}}running=false;clearInterval(ticker);releaseWake();exitPresent();document.body.classList.remove('bingoStop');$('rCheck').hidden=true}
+const cur=()=>byId[G.order[G.pos]];
+const isOver=()=>!!(G&&(G.done||G.pos>=G.order.length));
+function endGame(winner){
+  running=false;paused=false;clearInterval(ticker);try{player.stopVideo()}catch(e){}releaseWake();
+  G.done=true;G.winner=winner||null;saveGame();
+  document.querySelectorAll('[data-endwin]').forEach(b=>b.closest('.nextActs').outerHTML=afterGameHTML());
+  $('startBtn').textContent='Game over';$('startBtn').disabled=true;
+  idleScreen();renderNextGame();syncPresent();
+}
+function renderNextGame(){
+  // the next game unlocks only once this one is over (winner confirmed, ended, or out of songs)
+  const gi=T.indexOf(cat),nk=T[gi+1],over=isOver();
+  $('nextGameBtn').hidden=!over;syncSkip();
+  if(nk){$('nextGameBtn').textContent=`Next game: ${CATS[nk].name} →`;$('nextGameBtn').className='btn primary lg';$('nextGameBtn').onclick=()=>{history.replaceState({id:'play',cat:nk},'');route({id:'play',cat:nk})}}
+  else{$('nextGameBtn').textContent='Back to your games';$('nextGameBtn').className='btn primary lg';$('nextGameBtn').onclick=()=>{history.length>1?history.back():route({id:'tonight'})}} // last game: still give a clear next step
+}
+function idleScreen(){
+  $('cover').classList.remove('stopped');$('cover').classList.toggle('winner',isOver()&&!!G.winner);$('play').classList.toggle('over',isOver());
+  const left=G.order.length-G.pos;
+  if(isOver()){
+    $('nowTitle').textContent=G.winner?`Card ${G.winner} wins`:'Game over';
+    $('nowArtist').innerHTML='&nbsp;';
+    $('fill').style.width='0';$('timeLeft').textContent='';$('cover').hidden=false;$('play').classList.remove('fresh');
+    $('coverBig').textContent=G.winner?`Bingo! Card ${G.winner}`:'Game over';
+    $('coverMsg').textContent='';
+    return;
+  }
+  $('nowTitle').textContent=left?(G.played.length?'Paused':'Ready'):'Game over';
+  $('nowArtist').innerHTML=left?'&nbsp;':'Every song has played.';
+  $('fill').style.width='0';$('timeLeft').textContent='';
+  $('cover').hidden=false;$('coverBig').textContent=CATS[cat].name;
+  const canJoin=playerReady&&T.includes(cat)&&!G.played.length;
+  $('cover').classList.toggle('canJoin',canJoin);
+  $('coverMsg').textContent=playerReady?(canJoin?'Scan to play on your phone':''):'Loading the player…';
+  if(canJoin)paintJoin($('cQR'),$('cCode'));
+  $('coverWin').innerHTML=canJoin?`Win with ${chipIcon(patOf(cat))}${patName(patOf(cat))}`:'';
+  $('play').classList.toggle('fresh',!G.played.length&&!!left);
+  // coming back to a game in progress: show the last song's video under the light tint, like a pause from inside the game
+  if(playerReady&&G.played.length&&left){$('cover').classList.toggle('stopped',S.video==='show');$('coverBig').textContent='';$('coverMsg').textContent=''} // the line under the video already says Paused
+  if(LOCAL){$('cover').classList.remove('canJoin');$('coverBig').textContent='Needs a web address';$('coverMsg').textContent="YouTube won't play in a downloaded file. Open this from its web address instead."}
+}
+function renderRailPlayed(){
+  const hideNow=running&&!isOver()&&(S.name!=='show'||!paused); // the song playing now is already big under the video, so the list only holds the ones before it
+  const ids=G.played.slice(0,hideNow?-1:undefined);
+  $('rPlayedN').textContent=ids.length;
+  $('rPlayedList').innerHTML=ids.slice().reverse().map((id,i)=>{const s=byId[id];return`<li><span class="num">${ids.length-i}</span><span class="t">${esc(withYear(s))} <em>${esc(s.a)}</em></span></li>`}).join('');
+  const pre=!ids.length&&$('play').classList.contains('fresh');$('rPlayedEmpty').hidden=!pre;$('rPlayed').hidden=!ids.length&&!pre;$('rPlayed').classList.toggle('before',hideNow);
+  // the play screen's own list follows the same rule: the song playing now is the big title, not a row (and never gives away a hidden name)
+  $('playedCount').textContent=ids.length;$('playedEmpty').hidden=ids.length>0;
+  $('played').innerHTML=ids.slice().reverse().map((id,i)=>{const s=byId[id];return`<li><span class="num">${ids.length-i}</span><div>${esc(withYear(s))}<em>${esc(s.a)}</em></div></li>`}).join('');
+  playedScroll.reset();
+}
+/* TV played list: when it runs past the bottom, it scrolls itself slowly to the oldest song, pauses, then glides back to the newest */
+const playedScroll=(()=>{
+  let phase='top',t0=0,pos=0,raf=0;const SPEED=18,HOLD_TOP=6000,HOLD_END=4000; // px per second, ms
+  function frame(now){
+    raf=requestAnimationFrame(frame);
+    const ol=$('rPlayedList'),max=ol.scrollHeight-ol.clientHeight;
+    if(!presenting||max<=4||$('rPlayed').hidden){phase='top';t0=now;pos=0;ol.scrollTop=0;return}
+    if(!t0)t0=now;
+    if(phase==='top'){if(now-t0>HOLD_TOP){phase='down';t0=now;pos=ol.scrollTop}}
+    else if(phase==='down'){pos=Math.min(max,pos+Math.max(SPEED,max/35)*(Math.min(now-t0,100))/1000);t0=now;ol.scrollTop=pos;if(pos>=max){phase='end';t0=now}}
+    else if(phase==='end'){if(now-t0>HOLD_END){phase='back';t0=now;ol.scrollTo({top:0,behavior:'smooth'})}}
+    else if(phase==='back'){if(ol.scrollTop<=1||now-t0>2500){phase='top';t0=now;pos=0}}
+  }
+  return {reset(){if(!raf)raf=requestAnimationFrame(frame)}}; // a new song doesn't interrupt a scroll; the loop comes back to the top on its own
+})();
+function renderPlayed(){renderRailPlayed()}
+const startFor=s=>s.s!=null?s.s:S.startAt;
+function cueCurrent(){const s=cur();if(!s)return;curStart=startFor(s);checkedLen=false;player.cueVideoById({videoId:s.id,startSeconds:curStart})}
+
+function loadAPI(){
+  if(window.YT&&YT.Player){makePlayer();return}
+  if(apiLoading)return;apiLoading=true;
+  window.onYouTubeIframeAPIReady=makePlayer;
+  const t=document.createElement('script');t.src='https://www.youtube.com/iframe_api';
+  t.onerror=()=>{$('coverMsg').textContent="Couldn't reach YouTube. Check your connection and reload."};
+  document.head.append(t);
+}
+function makePlayer(){
+  if(player)return;
+  player=new YT.Player('player',{width:'100%',height:'100%',playerVars:{controls:0,rel:0,playsinline:1,iv_load_policy:3,disablekb:1,fs:0,cc_load_policy:0},
+    events:{onReady:()=>{playerReady=true;$('startBtn').disabled=!!(G&&isOver());if(!$('play').hidden&&G&&!isOver()){cueCurrent();idleScreen()}syncPresent()},onStateChange:onState,onError:onErr}});
+}
+function coverForAudio(){$('cover').hidden=S.video==='show';if(S.video!=='show'){$('coverBig').textContent=`Song ${G.played.length}`;$('coverMsg').textContent='Audio only'}}
+/* captions off: YouTube can turn them on from the viewer's own settings, so unload the captions module whenever a video plays */
+function noCaptions(){try{player.unloadModule('captions')}catch(e){}try{player.unloadModule('cc')}catch(e){}}
+function onState(e){
+  const st=e.data;
+  if(st===YT.PlayerState.PLAYING){errStreak=0;noCaptions()}
+  if(st===YT.PlayerState.PLAYING&&running){
+    if(countedPos!==G.pos){countedPos=G.pos;if(!G.played.includes(cur().id)){G.played.push(cur().id);saveGame();renderPlayed();syncPresent()}}
+    coverForAudio();
+  }
+  if(st===YT.PlayerState.ENDED&&running&&!paused){
+    if(!checkedLen){checkedLen=true;const d=player.getDuration()||0;curStart=Math.max(0,Math.floor(d-S.clip-5));player.seekTo(curStart,true);player.playVideo();return}
+    advance();
+  }
+}
+function onErr(){
+  errStreak++;
+  if(errStreak>=3){
+    running=false;paused=false;clearInterval(ticker);G.pos=Math.max(0,G.pos-2);saveGame();errStreak=0;
+    $('startBtn').textContent='Try again';idleScreen();
+    $('coverBig').textContent="YouTube won't play here";$('coverMsg').textContent='Check your internet connection, then try again.';
+    cueCurrent();return;
+  }
+  const s=cur();if(s&&countedPos===G.pos){G.played=G.played.filter(id=>id!==s.id);renderPlayed()}
+  setTimeout(advance,300);
+}
+function advance(){
+  if(advancing)return;advancing=true;setTimeout(()=>advancing=false,700);
+  G.pos++;saveGame();
+  if(G.pos>=G.order.length){endGame(null);$('coverBig').textContent='That’s every song';return}
+  extend=false;syncExtend();
+  const s=cur();curStart=startFor(s);checkedLen=false;
+  showSong(s,S.clip);$('fill').style.width='0';
+  if(running&&!paused)player.loadVideoById({videoId:s.id,startSeconds:curStart});
+  else cueCurrent();
+  syncPresent();
+}
+function showSong(s,rem){
+  $('songNo').textContent='';
+  const vis=S.name==='show'||(S.name==='reveal'&&rem<=10);
+  $('play').classList.remove('fresh');$('nowTitle').textContent=vis?withYear(s):'Name that tune';
+  if(vis){const m=movieOf(cat,s.t);$('nowArtist').innerHTML=esc(s.a)+(m?`<span class="nowM">From ${esc(m)}</span>`:'')}
+  else $('nowArtist').textContent=S.name==='reveal'?'Revealed in the last 10 seconds':'Listen closely';
+}
+function tick(){
+  if(!running||paused||!playerReady)return;
+  if(player.getPlayerState()!==YT.PlayerState.PLAYING)return;
+  if(!checkedLen){checkedLen=true;const d=player.getDuration();if(d&&curStart>0&&curStart+S.clip>d){curStart=Math.max(0,Math.floor(d-S.clip-5));player.seekTo(curStart,true);return}}
+  const el=Math.max(0,player.getCurrentTime()-curStart);
+  if(extend){ // playing the whole song: show time left in the song; YouTube's "ended" moves us on
+    const d=player.getDuration()||0,left=Math.max(0,Math.ceil(d-player.getCurrentTime())),span=Math.max(1,d-curStart);
+    $('fill').style.width=Math.min(100,el/span*100)+'%';
+    $('timeLeft').textContent=`${Math.floor(left/60)}:${String(left%60).padStart(2,'0')}`;
+    showSong(cur(),0);return;
+  }
+  const rem=Math.max(0,S.clip-el),r=Math.ceil(rem);
+  $('fill').style.width=Math.min(100,el/S.clip*100)+'%';
+  $('timeLeft').textContent=`${Math.floor(r/60)}:${String(r%60).padStart(2,'0')}`;
+  showSong(cur(),rem);
+  if(rem<=0)advance();
+}
+function toggleRun(){
+  if(!playerReady||isOver())return;
+  if(!running){running=true;paused=false;player.playVideo();showSong(cur(),S.clip);$('startBtn').textContent='Pause';clearInterval(ticker);ticker=setInterval(tick,250);holdWake()}
+  else if(paused){paused=false;$('cover').classList.remove('stopped');player.playVideo();$('startBtn').textContent='Pause';holdWake();coverForAudio()}
+  else{paused=true;player.pauseVideo();$('startBtn').textContent='Resume';$('cover').hidden=false;$('cover').classList.toggle('stopped',S.video==='show');$('coverBig').textContent='Stopped';$('coverMsg').textContent='Checking a card'}
+  syncPresent();renderWin();
+  if(paused){setPad('pCheckNum','');$('pCheckOut').innerHTML=''}
+}
+$('startBtn').onclick=toggleRun;
+/* clicking the video (or its cover when stopped) does the same as the Start / Pause / Stop for bingo button */
+document.querySelector('#play .video').addEventListener('click',toggleRun);
+function syncSkip(){
+  const can=running&&!paused&&!isOver(),l=$('skipLink');
+  l.hidden=!can;if(!can){l.classList.remove('armed');l.textContent='Skip this song'}
+  syncExtend();
+}
+// skipping is for a broken or silent video, so it takes two taps
+$('skipLink').onclick=()=>{
+  const l=$('skipLink');
+  if(!l.classList.contains('armed')){l.classList.add('armed');l.textContent='Tap again to skip this song';clearTimeout(l._t);l._t=setTimeout(()=>{l.classList.remove('armed');l.textContent='Skip this song'},4000);return}
+  l.classList.remove('armed');l.textContent='Skip this song';nextSong();
+};
+function syncExtend(){
+  const can=running&&!paused&&!isOver();
+  for(const id of ['keepBtn','hostKeep']){const b=$(id);if(!b)continue;b.disabled=!can;b.setAttribute('aria-pressed',extend);b.textContent=extend?'Back to clips':'Play full song'}
+}
+function toggleExtend(){
+  if(!running||paused||isOver())return;
+  extend=!extend;
+  // turning it off after the clip time has passed moves straight to the next song
+  if(!extend&&player.getCurrentTime()-curStart>=S.clip){advance();return}
+  syncExtend();syncPresent();
+}
+const nextSong=()=>{if(playerReady&&running&&!paused&&!isOver())advance()};
+$('keepBtn').onclick=toggleExtend;$('hostKeep').onclick=toggleExtend;
+
+/* present mode */
+let presenting=false,presentFS=false;
+function syncPresent(){
+  if(!cat||!G)return;
+  const gi=T.indexOf(cat),p=patOf(cat),over=isOver();
+  $('rGame').textContent=gi>=0&&T.length>1?`Game ${gi+1} of ${T.length}`:'';
+  $('rCat').textContent=CATS[cat].name;$('gameTag').innerHTML=`${esc(CATS[cat].name)} · ${chipIcon(p)}${patName(p)}`;
+  paintPat($('rPat'),p);$('rPatName').textContent=`${patName(p)} to win`;$('rPatNote').hidden=p!=='line';
+  const box=$('rWinBox');box.classList.toggle('won',!!(over&&G.winner));
+  if(over&&G.winner){$('rPatName').textContent=`Card ${G.winner} wins`;$('rPatNote').hidden=true}
+  $('rCheck').hidden=!(running&&paused&&!over);$('rail').classList.toggle('checking',!$('rCheck').hidden);document.body.classList.toggle('bingoStop',!!(running&&paused&&!over));
+  const live=running&&!paused,hold=running&&paused;
+  $('hostRun').textContent=over?'Game over':!running?(G.played.length?'Resume':'Start game'):paused?'Resume':'Stop for bingo';
+  $('hostRun').classList.toggle('stop',live);$('startBtn').classList.toggle('stop',live);
+  $('hostState').className=live?'live':hold?'hold':'';
+  $('hostStateText').textContent=over?(G.winner?`Game over · card ${G.winner} won`:'Game over'):live?`${extend?'Playing full song':'Playing'} · song ${G.played.length} of ${G.order.length}`:hold?'Stopped · checking a card':`Ready · ${G.order.length-G.pos} songs`;
+  $('hostRun').disabled=over||!playerReady||LOCAL;syncSkip();
+  const nk=T[gi+1];
+  $('hostNext').hidden=!(over&&nk);if(over&&nk)$('hostNext').innerHTML=`<span class="lg">Next game: ${esc(CATS[nk].name)}</span><span class="sm">Next game →</span>`;
+  // once the game is over, the only useful actions are the next game and exit
+  $('hostRun').hidden=over;$('hostKeep').hidden=over||!running||paused;$('hostNext').classList.toggle('primary',over);
+}
+function enterPresent(){
+  presenting=true;document.body.classList.add('presenting');syncPresent();
+  if(document.fullscreenEnabled&&!document.fullscreenElement){document.documentElement.requestFullscreen().then(()=>{presentFS=true;try{screen.orientation.lock('landscape').catch(()=>{})}catch(e){}}).catch(()=>{})}
+  document.body.classList.remove('hintGone');
+}
+function exitPresent(){
+  if(!presenting)return;presenting=false;document.body.classList.remove('presenting');
+  if(presentFS&&document.fullscreenElement){presentFS=false;document.exitFullscreen().catch(()=>{})}
+  try{screen.orientation.unlock()}catch(e){}
+}
+$('rotateX').onclick=()=>document.body.classList.add('hintGone');
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&presentFS){presentFS=false;exitPresent()}});
+$('presentBtn').onclick=enterPresent;$('hostExit').onclick=exitPresent;
+$('hostRun').onclick=toggleRun;
+$('hostNext').onclick=()=>{const nk=T[T.indexOf(cat)+1];if(isOver()&&nk){history.replaceState({id:'play',cat:nk},'');enterPlay(nk)}};
+document.addEventListener('keydown',e=>{
+  // a focused button already handles Space itself; acting here too would toggle twice
+  if(!presenting||['INPUT','SELECT','BUTTON'].includes(e.target.tagName))return;
+  if(e.key===' '){e.preventDefault();toggleRun()}
+});
+
+async function holdWake(){try{if('wakeLock' in navigator&&!wake){wake=await navigator.wakeLock.request('screen');wake.addEventListener('release',()=>wake=null)}}catch(e){}}
+function releaseWake(){try{wake&&wake.release()}catch(e){}wake=null}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&running&&!paused)holdWake()});
+
+/* tabs + check a card */
+const LINES=(()=>{const L=[];for(let r=0;r<5;r++)L.push([0,1,2,3,4].map(c=>r*5+c));for(let c=0;c<5;c++)L.push([0,1,2,3,4].map(r=>r*5+c));L.push([0,6,12,18,24],[4,8,12,16,20]);return L})();
+const lineName=i=>i<5?`row ${i+1}`:i<10?`the ${'BINGO'[i-5]} column`:'a diagonal';
+/* number pads: tapping digits never opens the phone keyboard, so nothing gets covered */
+function setPad(inId,v){$(inId).value=v;const el=$(inId+'Show');if(el){el.textContent=v||'Card number';el.classList.toggle('empty',!v)}}
+function makePad(padId,inId,onCheck){
+  $(padId).innerHTML=`<div class="padNum"><b id="${inId}Show" class="empty">Card number</b></div>`+
+    ['1','2','3','4','5','6','7','8','9','del','0','ok'].map(k=>`<button type="button" class="padKey${k==='ok'?' ok':''}" data-k="${k}" aria-label="${k==='del'?'Delete':k==='ok'?'Check card':k}">${k==='del'?'⌫':k==='ok'?'Check':k}</button>`).join('');
+  $(padId).onclick=e=>{const b=e.target.closest('[data-k]');if(b)padKey(inId,b.dataset.k,onCheck)};
+}
+function padKey(inId,k,onCheck){
+  const v=$(inId).value;
+  if(k==='del')setPad(inId,v.slice(0,-1));
+  else if(k==='ok')onCheck();
+  else if(v.length<4)setPad(inId,(v+k).replace(/^0+/,''));
+}
+const pCheck=()=>checkCard();
+makePad('pPad','pCheckNum',pCheck);
+// on a laptop, typing digits / Backspace / Enter drives whichever pad is showing
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='SELECT'||$('play').hidden)return;
+  const target=!$('rCheck').hidden?['pCheckNum',pCheck]:null;
+  if(!target)return;
+  if(/^[0-9]$/.test(e.key)){padKey(target[0],e.key,target[1]);e.preventDefault()}
+  else if(e.key==='Backspace'){padKey(target[0],'del',target[1]);e.preventDefault()}
+  else if(e.key==='Enter'&&e.target.tagName!=='BUTTON'){target[1]();e.preventDefault()}
+});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-endwin]');if(b)endGame(+b.dataset.endwin)});
+/* after a check, always offer the obvious next step */
+function nextActsHTML(ok,num){
+  if(isOver())return afterGameHTML();
+  const stopped=running&&paused;
+  if(ok)return `<div class="nextActs"><button class="btn primary lg" data-endwin="${num}">Card ${num} wins: end game</button><button class="btn ghost" data-act="another">Check another card</button></div>`;
+  return `<div class="nextActs">${stopped?'<button class="btn primary lg" data-act="resume">Resume the game</button>':''}<button class="btn ghost" data-act="another">Check another card</button></div>`;
+}
+function afterGameHTML(){
+  // the Next game button already sits above the check panel (and in the Present host bar), so don't repeat it here
+  const nk=T[T.indexOf(cat)+1];
+  return `<div class="nextActs">${nk?'<button class="btn ghost" data-act="another">Check another card</button>':'<button class="btn primary lg" data-act="home">Back to your games</button>'}</div>`;
+}
+function clearChecks(){setPad('pCheckNum','');$('pCheckOut').innerHTML=''}
+$('checkX').onclick=()=>{clearChecks();if(running&&paused)toggleRun()};
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
+  if(a==='resume'){clearChecks();if(running&&paused)toggleRun()}
+  else if(a==='another'){clearChecks()}
+  else if(a==='nextgame'){const nk=T[T.indexOf(cat)+1];if(nk){history.replaceState({id:'play',cat:nk},'');enterPlay(nk)}}
+  else if(a==='home'){history.length>1?history.back():route({id:'tonight'})}
+});
+/* Scores one card against one pattern. hit[i] is true when square i is played (the free center always is).
+   Returns whether it wins, a plain-English reason, progress toward the pattern, and which squares to outline. */
+function evalCard(hit,P){
+  const count=cells=>cells.filter(i=>hit[i]).length;
+  if(P==='line'){
+    const scored=LINES.map((l,i)=>({i,n:count(l)}));
+    const win=scored.find(x=>x.n===5);
+    if(win)return {ok:true,why:lineName(win.i),have:5,need:5,target:LINES[win.i]};
+    const best=scored.reduce((a,b)=>b.n>a.n?b:a);
+    return {ok:false,have:best.n,need:5,target:LINES[best.i],what:`Closest line (${lineName(best.i)})`};
+  }
+  if(P==='edges'){const n=count(EDGES);return {ok:n===16,why:'all the outside edges',have:n,need:16,target:EDGES,what:'Outside edges'}}
+  if(P==='x'){const n=count(DIAG);return {ok:n===9,why:'both diagonals',have:n,need:9,target:DIAG,what:'Both diagonals (X)'}}
+  const all=[...Array(25).keys()],n=count(all);
+  return {ok:n===25,why:'a full card',have:n,need:25,target:all,what:'Full card'};
+}
+function checkCard(inId='pCheckNum',outId='pCheckOut'){
+  const num=parseInt($(inId).value),out=$(outId);
+  if(!num||num<1){out.innerHTML='<div class="verdict hint"><b>Enter the card number first</b></div>';return}
+  const cells=cardCells(cat,num),done=new Set(G.played),hit=cells.map(c=>c===null||done.has(c.id));
+  const P=patOf(cat),r=evalCard(hit,P),tgt=new Set(r.target),freeIn=tgt.has(12);
+  const left=r.need-r.have;
+  const detail=r.ok?`It has ${r.why}.`
+    :`${r.what}: ${r.have} of ${r.need} squares${freeIn?', counting the free space':''}. ${left===1?'1 more song':`${left} more songs`} needed.`;
+  out.innerHTML=`<div class="verdict ${r.ok?'yes':'no'}">${r.ok?`<b>Bingo! Card ${num} wins</b>`:`<b>Card ${num}: not a bingo</b>`}<span>${detail}</span></div>
+    <div class="mini">${cells.map((c,i)=>{const cls=[c===null?'free':hit[i]?'hit':'',tgt.has(i)&&P!=='full'?'tgt':''].join(' ').trim();return `<div class="${cls}">${c===null?'FREE':esc(c.t)}</div>`}).join('')}</div>
+    ${nextActsHTML(r.ok,num)}`;
+}
+
+/* settings sheet */
+opts($('clipOpts'),[[30,'30s'],[45,'45s'],[60,'1 min'],[90,'1.5 min']],'clip');
+opts($('nameOpts'),[['show','Show'],['reveal','Last 10 sec'],['hide','Hide']],'name',()=>{if(running&&cur())showSong(cur(),99)});
+opts($('videoOpts'),[['show','Video'],['hide','Audio only']],'video',()=>{if(running&&countedPos===G.pos)coverForAudio()});
+$('setBtn').onclick=()=>{document.querySelector('.setDanger').hidden=!(G&&(G.played.length||running));$('setScrim').hidden=false;$('restartBtn').textContent='Restart';$('endBtn').textContent='End game';$('endBtn').disabled=isOver()};
+$('endBtn').onclick=()=>{
+  if($('endBtn').textContent!=='Tap again to end'){$('endBtn').textContent='Tap again to end';return}
+  endGame(null);$('setScrim').hidden=true;
+};
+$('setDone').onclick=()=>$('setScrim').hidden=true;
+$('setScrim').onclick=e=>{if(e.target===$('setScrim'))$('setScrim').hidden=true};
+$('restartBtn').onclick=()=>{
+  if($('restartBtn').textContent!=='Tap again to restart'){$('restartBtn').textContent='Tap again to restart';return}
+  $('pCheckOut').innerHTML='';
+  running=false;paused=false;clearInterval(ticker);try{player.stopVideo()}catch(e){}
+  newGame();countedPos=-1;renderPlayed();$('pCheckOut').innerHTML='';$('startBtn').textContent='Start game';$('startBtn').disabled=!playerReady||LOCAL;
+  if(playerReady)cueCurrent();idleScreen();renderNextGame();renderWin();$('setScrim').hidden=true;
+};
+
+/* ---------- host: share the night with phones ---------- */
+let lastQR={code:'',svg:''};
+function qrFor(){const u=joinURL();if(lastQR.code!==u){lastQR={code:u,svg:qrSVG(u)}}return lastQR.svg}
+const hostLabel=()=>location.host+location.pathname.replace(/index\.html$/,'').replace(/\/$/,'');
+function paintJoin(qrEl,codeEl){qrEl.innerHTML=qrFor();codeEl.textContent=joinCode()}
+$('phonesDone').onclick=()=>$('phonesScrim').hidden=true;
+$('phonesScrim').onclick=e=>{if(e.target===$('phonesScrim'))$('phonesScrim').hidden=true};
+const _syncPresent=syncPresent;
+syncPresent=function(){_syncPresent();if(presenting&&T.includes(cat)){paintJoin($('rQR'),$('rCode'));$('rHost').textContent=hostLabel()}$('rJoin').hidden=!T.includes(cat);$('rail').classList.toggle('idle',!!G&&!running&&!isOver());if(G)renderRailPlayed()};
+
+/* ---------- join with a code ---------- */
+$('hostStart').onclick=openPick;
+$('printAdd').onclick=openPick;
+const landGo=()=>{const v=$('landCode').value.trim();if(!parseCode(v)){$('landErr').textContent="That code doesn't look right. Check it against the host's screen.";return}$('landErr').textContent='';location.hash='j='+encodeURIComponent(v.toUpperCase())};
+$('showCode').onclick=()=>{$('showCode').hidden=true;$('codeRow').hidden=false;$('landCode').focus()};
+$('landJoin').onclick=landGo;$('landCode').onkeydown=e=>{if(e.key==='Enter')landGo()};
+/* in-page QR scanner: uses the phone's built-in barcode reader when there is one, otherwise loads jsQR */
+let scanStream=null,scanTimer=null,scanDetector=null;
+function joinFromScan(text){
+  const t=String(text||'').trim(),m=t.match(/#j=([^&\s]+)/);
+  const raw=m?decodeURIComponent(m[1]):t;
+  if(!parseCode(raw))return false;
+  stopScan();location.hash='j='+encodeURIComponent(raw.toUpperCase().replace(/~(.*)$/,(x,p)=>'~'+p.toLowerCase()));return true;
+}
+function loadJsQR(){return window.jsQR?Promise.resolve():new Promise((ok,no)=>{const sc=document.createElement('script');sc.src=BASE+'jsqr.min.js';sc.onload=ok;sc.onerror=no;document.head.append(sc)})}
+async function startScan(){
+  $('scanMsg').textContent="Point your camera at the QR code on the host's screen.";$('scanner').hidden=false;
+  try{scanStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false})}
+  catch(e){$('scanMsg').textContent="Couldn't open the camera. Allow camera access, or use your phone's camera app to scan, or type the code.";return}
+  const v=$('scanVideo');v.srcObject=scanStream;await v.play().catch(()=>{});
+  try{if('BarcodeDetector' in window&&(await BarcodeDetector.getSupportedFormats()).includes('qr_code'))scanDetector=new BarcodeDetector({formats:['qr_code']})}catch(e){}
+  if(!scanDetector){try{await loadJsQR()}catch(e){$('scanMsg').textContent="Couldn't start the scanner. Type the code instead.";return}}
+  const c=document.createElement('canvas'),ctx=c.getContext('2d',{willReadFrequently:true});
+  const tick=async()=>{
+    if(!scanStream)return;
+    if(v.readyState>=2){
+      try{
+        if(scanDetector){const r=await scanDetector.detect(v);for(const x of r)if(joinFromScan(x.rawValue))return}
+        else{const w=Math.min(640,v.videoWidth),h=Math.round(v.videoHeight*w/v.videoWidth);c.width=w;c.height=h;ctx.drawImage(v,0,0,w,h);const r=jsQR(ctx.getImageData(0,0,w,h).data,w,h,{inversionAttempts:'dontInvert'});if(r&&r.data){if(joinFromScan(r.data))return;$('scanMsg').textContent="That's not a Music Bingo code. Try the code on the host's screen."}}
+      }catch(e){}
+    }
+    scanTimer=setTimeout(tick,150);
+  };
+  tick();
+}
+function stopScan(){clearTimeout(scanTimer);if(scanStream){scanStream.getTracks().forEach(t=>t.stop());scanStream=null}$('scanVideo').srcObject=null;$('scanner').hidden=true}
+$('scanBtn').onclick=startScan;$('scanCancel').onclick=stopScan;
+// phones without camera access in the browser still have their camera app; hide the button only when the browser can't do it at all
+if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)){$('scanBtn').hidden=true}
+function renderRejoin(){
+  const last=store.get('lastJoin',null),b=$('rejoin');
+  const fresh=last&&Date.now()-last.at<18*3600*1000;
+  b.hidden=!fresh;if(fresh){b.textContent=`Back to your card · ${last.num}`;b.onclick=()=>{location.hash='j='+last.code}}
+}
+
+/* ---------- phone card (player mode) ---------- */
+const BASE=/\.html$/.test(location.pathname)?location.pathname.replace(/[^/]*$/,''):location.pathname.replace(/\/?$/,'/');
+const PAT_FROM={l:'line',e:'edges',x:'x',f:'full'};
+function parseCode(raw){
+  raw=decodeURIComponent(String(raw||'')).toUpperCase().replace(/\s+/g,'');
+  let pats='';const t=raw.indexOf('~');if(t>=0){pats=raw.slice(t+1).toLowerCase();raw=raw.slice(0,t)}
+  let parts=raw.split('-').filter(Boolean);
+  if(parts.length===1&&parts[0].length>=5&&(parts[0].length-2)%3===0){const r=parts[0];parts=[r.slice(0,2)];for(let i=2;i<r.length;i+=3)parts.push(r.slice(i,i+3))}
+  if(parts.length<2||parts[0].length!==2)return null;
+  const games=[];
+  for(let i=1;i<parts.length;i++){
+    const p=parts[i];if(p.length!==3)return null;
+    const k=Object.keys(CATS).find(x=>CATS[x].c===p[0]);if(!k)return null;
+    games.push({k,pre:p.slice(1).toLowerCase(),pat:PAT_FROM[pats[i-1]]||null});
+  }
+  return {night:parts[0],games};
+}
+async function resolveSongs(g){
+  if(CATS[g.k].h.startsWith(g.pre))return CATS[g.k].songs;
+  const idx=await (await fetch(BASE+'songs/index.json')).json();
+  const h=(idx[g.k]||[]).find(x=>x.startsWith(g.pre));if(!h)throw new Error('missing version');
+  return (await (await fetch(`${BASE}songs/${g.k}-${h}.json`)).json()).songs;
+}
+let PL=null;
+async function startPhone(raw){
+  const c=parseCode(raw);
+  PHONE_MODE=true;document.querySelectorAll('.screen').forEach(x=>x.hidden=x.id!=='phone');
+  $('phone').classList.remove('ready');$('phRetry').hidden=true;
+  if(!c){$('phCard').innerHTML='';$('phTabs').innerHTML='';$('phWin').innerHTML='';$('phMsg').textContent="This link doesn't work. Ask the host for the code and tap Join on the Music Bingo page.";return}
+  const key='pl_'+c.night;let st=store.get(key,null);
+  if(!st){st={num:1000+Math.floor(Math.random()*9000),marks:{},tab:0};store.set(key,st)}
+  $('phNum').textContent=st.num;$('phMsg').textContent='Loading your card…';
+  try{
+    for(const g of c.games){const ck=`pls_${c.night}_${g.k}_${g.pre}`;let songs=store.get(ck,null);if(!songs){songs=await resolveSongs(g);store.set(ck,songs)}SONGS[g.k]=songs}
+  }catch(e){$('phMsg').textContent="Couldn't load the songs for this game. Check your connection, then try again.";$('phRetry').hidden=false;$('phRetry').onclick=()=>startPhone(raw);return}
+  st.tab=Math.min(st.tab||0,c.games.length-1);
+  PL={c,st,key};$('phone').classList.add('ready');$('phMsg').textContent='Tap a square when you hear that song.';renderPhone();
+  store.set('lastJoin',{code:raw,num:st.num,at:Date.now()});
+}
+function renderPhone(){
+  const {c,st}=PL,g=c.games[st.tab],marks=new Set(st.marks[g.k]||[]);
+  $('phone').classList.toggle('marked',marks.size>0); // the hint goes once they've tapped a square
+  $('phTabs').innerHTML=c.games.map((x,i)=>`<button role="tab" aria-selected="${i===st.tab}" data-tab="${i}">${c.games.length>1?`${i+1} · `:''}${esc(CATS[x.k].name)}</button>`).join('');
+  $('phWin').innerHTML=g.pat?`To win: ${patName(g.pat)}`:'';
+  $('phCard').innerHTML=cardCells(g.k,st.num).map((cell,i)=>cell?`<button data-i="${i}" class="${marks.has(i)?'on':''}" aria-pressed="${marks.has(i)}" aria-label="${esc(cell.t)} by ${esc(cell.a)}"><span class="t">${esc(shortTitle(cell.t))}</span></button>`:'<button class="free" disabled>FREE</button>').join('');fitPhoneCard();
+}
+$('phTabs').onclick=e=>{const b=e.target.closest('[data-tab]');if(!b)return;PL.st.tab=+b.dataset.tab;store.set(PL.key,PL.st);renderPhone()};
+/* phone card: song name only, as big as each square allows */
+function shortTitle(t){const m=/^(.{4,}?)\s*\([^()]*\)\s*$/.exec(t);return (m?m[1]:t).replace(/[A-Za-z'\u2019]{8,}/g,w=>HY[w]||w)} // "Sweet Dreams (Are Made of This)" -> "Sweet Dreams"
+function fitPhoneCard(){
+  document.querySelectorAll('#phCard .t').forEach(t=>{
+    const box=t.parentElement,cs=getComputedStyle(box),pad=parseFloat(cs.paddingLeft)*2,w=box.clientWidth-pad,h=box.clientHeight-pad,over=()=>t.scrollWidth>w||t.scrollHeight>h;
+    let sz=17;t.classList.remove('brk');t.style.fontSize=sz+'px';
+    while(sz>13&&over()){sz-=.5;t.style.fontSize=sz+'px'}
+    if(over()){t.classList.add('brk');sz=15;t.style.fontSize=sz+'px';while(sz>10&&over()){sz-=.5;t.style.fontSize=sz+'px'}}
+    if(over())t.classList.add('brk2'); // last resort: break anywhere // one long word: hyphenate rather than shrink to nothing
+  });
+}
+addEventListener('resize',()=>{if(PL)fitPhoneCard()});
+$('phCard').onclick=e=>{
+  const b=e.target.closest('[data-i]');if(!b)return;const g=PL.c.games[PL.st.tab],i=+b.dataset.i;
+  const m=new Set(PL.st.marks[g.k]||[]);m.has(i)?m.delete(i):m.add(i);PL.st.marks[g.k]=[...m];store.set(PL.key,PL.st);
+  b.classList.toggle('on',m.has(i));b.setAttribute('aria-pressed',m.has(i));$('phone').classList.toggle('marked',m.size>0);
+};
+$('phClear').onclick=()=>{
+  const b=$('phClear');if(b.textContent!=='Tap again to clear'){b.textContent='Tap again to clear';setTimeout(()=>b.textContent='Clear my marks',3000);return}
+  const g=PL.c.games[PL.st.tab];PL.st.marks[g.k]=[];store.set(PL.key,PL.st);b.textContent='Clear my marks';renderPhone();
+};
+$('phBingo').onclick=()=>{if(!PL)return;const g=PL.c.games[PL.st.tab],i=PL.st.tab;$('phOverNum').textContent=PL.st.num;$('phOverGame').textContent=`${PL.c.games.length>1?`Game ${i+1} · `:''}${CATS[g.k].name}`;$('phOver').hidden=false};
+$('phOverClose').onclick=()=>$('phOver').hidden=true;
+
+/* ---------- start ---------- */
+const joinHash=()=>location.hash.startsWith('#j=')?location.hash.slice(3):null;
+window.addEventListener('hashchange',()=>{const j=joinHash();if(j)startPhone(j)});
+syncLocks();
+if(joinHash())startPhone(joinHash());
+else{
+  renderTonight();
+  window.addEventListener('pageshow',()=>{if(!PHONE_MODE&&!$('tonight').hidden)renderTonight()});
+}
+</script>
+</body>
+</html>
